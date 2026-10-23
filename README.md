@@ -4,8 +4,8 @@ Students **choose one** of three ways to complete the Constitutional Analysis as
 
 | Option | What it is | Students submit |
 |---|---|---|
-| 1. 3D game, two looks (`blocky-3d/`, `storybook-third-person/`) | Walk Philadelphia in 1787, hear the Convention debates, climb parkour trials to the Article scrolls, then follow the amendments through the Hall of Echoes. Block-world and storybook (Wind Waker style) both use a camera behind the player. Needs WebGL. | Essay PDF from the game |
-| 2. Pixel-art game (`pixel-art/`) | The same story as a top-down walkable game. Runs on almost any device, including phones. | Essay PDF from the game |
+| 1. 3D game, two looks (`blocky-3d/`, `storybook-third-person/`) | Walk Philadelphia in 1787, hear the Convention debates, climb parkour trials to the Article scrolls, then follow the amendments through the Hall of Echoes. Block-world and storybook (Wind Waker style) both use a camera behind the player. Needs WebGL. | Essay (Word document) from the game |
+| 2. Pixel-art game (`pixel-art/`) | The same story as a top-down walkable game. Runs on almost any device, including phones. | Essay (Word document) from the game |
 | 3. Written assignment (`text-assignment/`) | **The original Word document, unchanged.** | The completed document |
 
 Students start at `index.html`, which explains the options and how to turn the work in.
@@ -21,7 +21,7 @@ Students start at `index.html`, which explains the options and how to turn the w
 * **Signing and ratification (chapters 6 to 9):** Franklin's closing speech and the signing, George Mason's refusal and the demand for a bill of rights, the Federalist and Anti-Federalist pamphlet fight, and Madison's 1789 proposals.
 * **Hall of Echoes:** eight guides (Mercy Otis Warren, Ruth Bader Ginsburg, John Marshall, Frederick Douglass, Alice Paul, Franklin D. Roosevelt, Martin Luther King Jr., and the older James Madison) lead through all 27 Amendments in order. Each gets the history, the text, a legal-lens concept, a check question, and a writing box with the two assignment questions (minimum 20 words).
 * **Final reflection:** a legal-lens reflection at the monument (minimum 100 words).
-* **Essay PDF:** name and date, the title "Constitutional Analysis", Part 1 (Articles 1 to 7), Part 2 (Amendments 1 to 27), the reflection, and a one-line game record with a completion code.
+* **Essay document (.docx):** name and date, the title "Constitutional Analysis", Part 1 (Articles 1 to 7), Part 2 (Amendments 1 to 27), the reflection, and a one-line game record with a completion code.
 
 ## Keyboard-only play
 
@@ -45,4 +45,4 @@ The games require about 34 written answers, so plan several class periods.
 2. Settings, Pages, deploy from the main branch, root folder.
 3. The three games and the written assignment are linked from `index.html`. Each game saves progress in the student's own browser.
 
-Libraries (`lib/three.min.js`, `lib/jspdf.umd.min.js`) are bundled locally with a CDN fallback.
+Libraries (`lib/three.min.js`, `lib/jspdf.umd.min.js`) are bundled locally with a CDN fallback. The essay Word document is built by the game itself and needs no library (the PDF library is no longer used).

@@ -1560,10 +1560,10 @@ function drawTabs(){
     b.append(ul1);
   } else {
     var txt=caseText(),ta=el("textarea",{rows:"14",readonly:true,"aria-label":"Case file text"});ta.value=txt;
-    var cb=el("button",{class:"go",type:"button",onclick:function(){downloadCertificate();}},"Download completed essay (PDF)");
+    var cb=el("button",{class:"go",type:"button",onclick:function(){downloadCertificate();}},"Download completed essay (Word document)");
     if(!S.done){cb.disabled=true;cb.title="Unlocks when you finish the final reflection";}
     b.append(el("h3",null,"Your completed essay"));
-    b.append(el("p",null,S.done?"Your essay is a PDF with all of your written answers (your article summaries, your amendment analyses, and your reflection) formatted like an essay and ready to attach to a Google Classroom assignment.":"Your essay PDF unlocks when you finish the final reflection. It will gather all of your written answers into an essay, ready to attach to a Google Classroom assignment."));
+    b.append(el("p",null,S.done?"Your essay is a Word document with all of your written answers (your article summaries, your amendment analyses, and your reflection) formatted like an essay and ready to attach to a Google Classroom assignment.":"Your essay document unlocks when you finish the final reflection. It will gather all of your written answers into an essay, ready to attach to a Google Classroom assignment."));
     b.append(el("div",{class:"row"},cb));
     b.append(el("h3",null,"Or copy your work as text"),el("p",{class:"cap"},"Copy this and paste it into a Google Doc or your assignment. It updates as you play."),ta);
     var rowb=[copyBtn(ta,txt)];if($("dlg").hidden)rowb.push(el("button",{class:"go",type:"button",onclick:function(){closeMenu();askReset();}},"Start over"));
@@ -1606,57 +1606,74 @@ function certDate(){
   var d=S.completedOn?new Date(S.completedOn):new Date();
   try{return d.toLocaleDateString("en-US",{year:"numeric",month:"long",day:"numeric"});}catch(e){return d.toDateString();}
 }
-function buildCertificate(){
-  var J=window.jspdf&&window.jspdf.jsPDF;if(!J)return null;
-  var doc=new J({unit:"pt",format:"letter"});
-  var name=pdfSafe(S.name||"Student"),code=certCode(),dateStr=pdfSafe(certDate());
-  var W=612,H=792,M=72,TW=W-2*M,LH=19,SZ=12,IND=36,y=M+6;
-  var INK=[18,18,18],GREY=[105,105,105];
-  function ink(c){doc.setTextColor(c[0],c[1],c[2]);}
-  function ensure(h){if(y+h>H-M+6){doc.addPage("letter","portrait");y=M+22;}}
-  function body(style,size){doc.setFont("times",style||"normal");doc.setFontSize(size||SZ);ink(INK);}
-  function paragraph(text){
-    var paras=pdfSafe(text).split(/\n+/).filter(function(p){return p.trim()!=="";});
-    paras.forEach(function(p){
-      body();var first=doc.splitTextToSize(p,TW-IND)[0]||"";
-      ensure(LH);doc.text(first,M+IND,y);y+=LH;
-      var rest=p.substring(first.length).replace(/^\s+/,"");
-      if(rest)doc.splitTextToSize(rest,TW).forEach(function(l){ensure(LH);doc.text(l,M,y);y+=LH;});
-    });
-  }
-  function missing(){body("italic");ink(GREY);ensure(LH);doc.text("(Not written.)",M+IND,y);y+=LH;}
-  function heading(text,size,style,gap){ensure(LH*3);body(style||"bold",size||13);doc.text(pdfSafe(text),M,y);y+=LH+(gap||2);}
-  body();doc.text(name,M,y);y+=LH;doc.text(dateStr,M,y);y+=LH;
-  y+=6;body("bold",16);doc.text("Constitutional Analysis",W/2,y,{align:"center"});y+=LH+14;
-  heading("Part 1: Summaries of the Articles",13,"bold",4);
-  ARTICLES.forEach(function(a){
-    ensure(LH*4);body("bold",12);doc.text("Article "+a.n+": "+pdfSafe(a.title),M,y);y+=LH-2;
-    if(S.art&&S.art[a.n])paragraph(S.art[a.n]);else missing();
-    y+=6;
+/* ============ WORD DOCUMENT (.docx) BUILT IN THE BROWSER, NO LIBRARY NEEDED ============ */
+function crc32(buf){var t=crc32.t;if(!t){t=crc32.t=[];for(var n=0;n<256;n++){var c=n;for(var k=0;k<8;k++)c=c&1?0xEDB88320^(c>>>1):c>>>1;t[n]=c>>>0;}}var c2=0xFFFFFFFF;for(var i=0;i<buf.length;i++)c2=t[(c2^buf[i])&255]^(c2>>>8);return(c2^0xFFFFFFFF)>>>0;}
+function zipStore(files,mime){
+  var enc=new TextEncoder(),parts=[],central=[],offset=0;
+  files.forEach(function(f){
+    var name=enc.encode(f.name),data=enc.encode(f.text),crc=crc32(data),sz=data.length;
+    var lh=new Uint8Array(30+name.length),dv=new DataView(lh.buffer);
+    dv.setUint32(0,0x04034b50,true);dv.setUint16(4,20,true);dv.setUint16(6,0x0800,true);dv.setUint16(8,0,true);dv.setUint16(10,0,true);dv.setUint16(12,0x21,true);
+    dv.setUint32(14,crc,true);dv.setUint32(18,sz,true);dv.setUint32(22,sz,true);dv.setUint16(26,name.length,true);dv.setUint16(28,0,true);lh.set(name,30);
+    parts.push(lh,data);
+    var ch=new Uint8Array(46+name.length),cv=new DataView(ch.buffer);
+    cv.setUint32(0,0x02014b50,true);cv.setUint16(4,20,true);cv.setUint16(6,20,true);cv.setUint16(8,0x0800,true);cv.setUint16(10,0,true);cv.setUint16(12,0,true);cv.setUint16(14,0x21,true);
+    cv.setUint32(16,crc,true);cv.setUint32(20,sz,true);cv.setUint32(24,sz,true);cv.setUint16(28,name.length,true);cv.setUint32(42,offset,true);ch.set(name,46);
+    central.push(ch);offset+=lh.length+sz;
   });
-  y+=4;heading("Part 2: Amendments",13,"bold",4);
-  AMENDS.forEach(function(a){
-    ensure(LH*4);body("bold",12);doc.text("Amendment "+a.n+" ("+a.year+"): "+pdfSafe(a.name),M,y);y+=LH-2;
-    if(S.am&&S.am[a.n])paragraph(S.am[a.n]);else missing();
-    y+=6;
-  });
-  y+=4;heading("Reflection: The Constitution Through a Legal Lens",13,"bold",4);
-  if(S.refl)paragraph(S.refl);else missing();
-  y+=14;ensure(40);doc.setDrawColor(190,190,190);doc.setLineWidth(.6);doc.line(M,y,W-M,y);y+=14;
-  body("normal",9);ink(GREY);
-  var rec="Completed in The Convention of 1787  |  "+(S.pts||0)+" points  |  "+Object.keys(S.cards||{}).length+" of "+TOTAL+" cards  |  Completion code "+code;
-  doc.splitTextToSize(rec,TW).forEach(function(l,i){doc.text(l,W/2,y+i*11,{align:"center"});});
-  var total=doc.getNumberOfPages();
-  for(var p=2;p<=total;p++){doc.setPage(p);body("normal",12);doc.text(name+"  "+p,W-M,M-18,{align:"right"});}
-  doc.setProperties({title:"Constitutional Analysis - "+name,subject:"Completed essay",author:name,creator:"The Convention of 1787"});
-  return doc;
+  var cdSize=0;central.forEach(function(c){cdSize+=c.length;});
+  var end=new Uint8Array(22),ev=new DataView(end.buffer);
+  ev.setUint32(0,0x06054b50,true);ev.setUint16(8,files.length,true);ev.setUint16(10,files.length,true);ev.setUint32(12,cdSize,true);ev.setUint32(16,offset,true);
+  return new Blob(parts.concat(central,[end]),{type:mime});
 }
-function certFileName(){var n=pdfSafe(S.name||"Student").replace(/[^A-Za-z0-9]+/g,"-").replace(/^-+|-+$/g,"")||"Student";return "Constitutional-Analysis-"+n+".pdf";}
+function xmlEsc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F]/g,"");}
+function buildCertificate(){
+  var W='xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"',HD='<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n';
+  var name=S.name||"Student",dateStr=certDate(),code=certCode();
+  function run(t,o){o=o||{};var pr="";if(o.b)pr+="<w:b/>";if(o.i)pr+="<w:i/>";if(o.color)pr+='<w:color w:val="'+o.color+'"/>';return"<w:r>"+(pr?"<w:rPr>"+pr+"</w:rPr>":"")+'<w:t xml:space="preserve">'+xmlEsc(t)+"</w:t></w:r>";}
+  function para(style,runs){return"<w:p>"+(style?'<w:pPr><w:pStyle w:val="'+style+'"/></w:pPr>':"")+runs+"</w:p>";}
+  function body(text){var ps=String(text||"").split(/\n+/).filter(function(p){return p.trim()!=="";});return ps.map(function(p){return para("BodyText",run(p));}).join("");}
+  var missing=para("BodyText",run("(Not written.)",{i:1,color:"666666"}));
+  var b=[];
+  b.push(para(null,run(name)),para(null,run(dateStr)),para("Title",run("Constitutional Analysis")));
+  b.push(para("Heading1",run("Part 1: Summaries of the Articles")));
+  ARTICLES.forEach(function(a){b.push(para("Heading2",run("Article "+a.n+": "+a.title)));b.push(S.art&&S.art[a.n]?body(S.art[a.n]):missing);});
+  b.push(para("Heading1",run("Part 2: Amendments")));
+  AMENDS.forEach(function(a){b.push(para("Heading2",run("Amendment "+a.n+" ("+a.year+"): "+a.name)));b.push(S.am&&S.am[a.n]?body(S.am[a.n]):missing);});
+  b.push(para("Heading1",run("Reflection: The Constitution Through a Legal Lens")));
+  b.push(S.refl?body(S.refl):missing);
+  b.push(para("Record",run("Completed in The Convention of 1787  |  "+(S.pts||0)+" points  |  "+Object.keys(S.cards||{}).length+" of "+TOTAL+" cards  |  Completion code "+code)));
+  var sect='<w:sectPr><w:headerReference w:type="default" r:id="rId2"/><w:headerReference w:type="first" r:id="rId3"/><w:pgSz w:w="12240" w:h="15840"/><w:pgMar w:top="1440" w:right="1440" w:bottom="1440" w:left="1440" w:header="720" w:footer="720" w:gutter="0"/><w:titlePg/></w:sectPr>';
+  var doc=HD+'<w:document '+W+' xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><w:body>'+b.join("")+sect+'</w:body></w:document>';
+  function sty(id,nm,extra,ppr,rpr,based){return'<w:style w:type="paragraph" w:styleId="'+id+'"><w:name w:val="'+nm+'"/>'+(based?'<w:basedOn w:val="Normal"/>':"")+(extra||"")+'<w:qFormat/>'+(ppr?"<w:pPr>"+ppr+"</w:pPr>":"")+(rpr?"<w:rPr>"+rpr+"</w:rPr>":"")+"</w:style>";}
+  var styles=HD+'<w:styles '+W+'><w:docDefaults><w:rPrDefault><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:eastAsia="Times New Roman" w:cs="Times New Roman"/><w:sz w:val="24"/><w:szCs w:val="24"/><w:lang w:val="en-US"/></w:rPr></w:rPrDefault><w:pPrDefault><w:pPr><w:spacing w:after="0" w:line="360" w:lineRule="auto"/></w:pPr></w:pPrDefault></w:docDefaults>'
+   +'<w:style w:type="paragraph" w:default="1" w:styleId="Normal"><w:name w:val="Normal"/><w:qFormat/></w:style>'
+   +sty("Title","Title",'<w:next w:val="Normal"/>','<w:spacing w:before="240" w:after="240"/><w:jc w:val="center"/>','<w:b/><w:sz w:val="32"/><w:szCs w:val="32"/>',1)
+   +sty("Heading1","heading 1",'<w:next w:val="Normal"/>','<w:keepNext/><w:spacing w:before="240" w:after="60"/><w:outlineLvl w:val="0"/>','<w:b/><w:sz w:val="26"/><w:szCs w:val="26"/>',1)
+   +sty("Heading2","heading 2",'<w:next w:val="BodyText"/>','<w:keepNext/><w:spacing w:before="120" w:after="0"/><w:outlineLvl w:val="1"/>','<w:b/><w:sz w:val="24"/><w:szCs w:val="24"/>',1)
+   +sty("BodyText","Body Text",null,'<w:spacing w:after="120"/><w:ind w:firstLine="720"/>',null,1)
+   +sty("Record","Completion record",null,'<w:pBdr><w:top w:val="single" w:sz="4" w:space="8" w:color="BBBBBB"/></w:pBdr><w:spacing w:before="480"/><w:jc w:val="center"/>','<w:color w:val="666666"/><w:sz w:val="18"/><w:szCs w:val="18"/>',1)
+   +'</w:styles>';
+  var hdr1=HD+'<w:hdr '+W+'><w:p><w:pPr><w:jc w:val="right"/></w:pPr><w:r><w:t xml:space="preserve">'+xmlEsc(name)+'  </w:t></w:r><w:r><w:fldChar w:fldCharType="begin"/></w:r><w:r><w:instrText xml:space="preserve"> PAGE </w:instrText></w:r><w:r><w:fldChar w:fldCharType="separate"/></w:r><w:r><w:t>2</w:t></w:r><w:r><w:fldChar w:fldCharType="end"/></w:r></w:p></w:hdr>';
+  var hdr2=HD+'<w:hdr '+W+'><w:p/></w:hdr>';
+  var RELNS="http://schemas.openxmlformats.org/package/2006/relationships",OD="http://schemas.openxmlformats.org/officeDocument/2006/relationships";
+  var ct=HD+'<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/>'
+   +'<Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/>'
+   +'<Override PartName="/word/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml"/>'
+   +'<Override PartName="/word/header1.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.header+xml"/>'
+   +'<Override PartName="/word/header2.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.header+xml"/>'
+   +'<Override PartName="/docProps/core.xml" ContentType="application/vnd.openxmlformats-package.core-properties+xml"/></Types>';
+  var rels=HD+'<Relationships xmlns="'+RELNS+'"><Relationship Id="rId1" Type="'+OD+'/officeDocument" Target="word/document.xml"/><Relationship Id="rId2" Type="http://schemas.openxmlformats.org/package/2006/relationships/metadata/core-properties" Target="docProps/core.xml"/></Relationships>';
+  var drels=HD+'<Relationships xmlns="'+RELNS+'"><Relationship Id="rId1" Type="'+OD+'/styles" Target="styles.xml"/><Relationship Id="rId2" Type="'+OD+'/header" Target="header1.xml"/><Relationship Id="rId3" Type="'+OD+'/header" Target="header2.xml"/></Relationships>';
+  var core=HD+'<cp:coreProperties xmlns:cp="http://schemas.openxmlformats.org/package/2006/metadata/core-properties" xmlns:dc="http://purl.org/dc/elements/1.1/"><dc:title>'+xmlEsc("Constitutional Analysis - "+name)+'</dc:title><dc:creator>'+xmlEsc(name)+'</dc:creator></cp:coreProperties>';
+  return zipStore([{name:"[Content_Types].xml",text:ct},{name:"_rels/.rels",text:rels},{name:"word/document.xml",text:doc},{name:"word/styles.xml",text:styles},{name:"word/_rels/document.xml.rels",text:drels},{name:"word/header1.xml",text:hdr1},{name:"word/header2.xml",text:hdr2},{name:"docProps/core.xml",text:core}],"application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+}
+function certFileName(){var n=String(S.name||"Student").replace(/[^A-Za-z0-9]+/g,"-").replace(/^-+|-+$/g,"")||"Student";return"Constitutional-Analysis-"+n+".docx";}
 async function downloadCertificate(){
-  if(!S.done){toast("Finish the final reflection to unlock your essay PDF.");return;}
-  var doc=null;try{doc=buildCertificate();}catch(e){console.error(e);}
-  if(!doc){toast("The PDF tool could not load. Use Copy case file and paste it into a Google Doc.");return;}
-  var blob=doc.output("blob"),fname=certFileName(),dl=null;
+  if(!S.done){toast("Finish the final reflection to unlock your essay document.");return;}
+  var blob=null;try{blob=buildCertificate();}catch(e){console.error(e);}
+  if(!blob){toast("The document could not be built. Use Copy case file and paste it into a Google Doc.");return;}
+  var fname=certFileName(),dl=null;
   try{if(window.claude&&window.claude.use)dl=await window.claude.use("downloads");}catch(e){dl=null;}
   if(dl){
     try{await dl.save({filename:fname,data:blob});toast("Essay saved. Attach it to your Google Classroom assignment.");}
