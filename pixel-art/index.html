@@ -57,6 +57,16 @@ body.kbd .opt:focus,body.kbd .hls:focus{box-shadow:0 0 0 3px var(--info)}
 body.kbd #mbody:focus{outline:3px solid var(--info);outline-offset:-3px}
 @media (pointer:coarse){#dKeys{display:none}.opt[data-n]::before{display:none}}
 
+#sceneCard{position:fixed;inset:0;z-index:90;background:#07080c;display:grid;place-items:center;opacity:0;transition:opacity .6s ease;color:#f4ecd8;text-align:center;padding:24px}
+#sceneCard.on{opacity:1}
+#sceneCard .sc-in{max-width:660px}
+#sceneCard .sc-part{font-family:var(--sc);letter-spacing:.18em;text-transform:uppercase;color:#c9a96a;margin:0 0 6px;font-size:1.05rem}
+#sceneCard h2{font-family:var(--serif);font-weight:400;font-size:clamp(1.8rem,5vw,3rem);margin:0 0 6px;line-height:1.1}
+#sceneCard .sc-year{font-family:var(--sc);font-size:clamp(2.6rem,9vw,5.4rem);margin:4px 0;color:#f0d9a0;letter-spacing:.04em}
+#sceneCard .sc-place{font-style:italic;opacity:.85;margin:0 0 14px}
+#sceneCard .sc-cap{font-size:1.15rem;line-height:1.5;opacity:.92;margin:0 0 22px}
+#eraTag{position:fixed;left:50%;top:calc(env(safe-area-inset-top,0px) + 12px);transform:translateX(-50%);z-index:21;padding:3px 16px;border-radius:999px;background:rgba(20,16,10,.62);color:#f4e8c8;font-family:var(--sc);letter-spacing:.06em;font-size:.95rem;pointer-events:none;white-space:nowrap}
+@media (max-width:760px){#eraTag{top:auto;bottom:calc(env(safe-area-inset-bottom,0px) + 74px)}}
 /* HUD */
 #hud{position:fixed;left:0;right:0;top:env(safe-area-inset-top,0px);display:flex;justify-content:space-between;gap:10px;padding:10px 12px;z-index:20;pointer-events:none}
 .win{background:var(--grain),radial-gradient(ellipse at 18% 12%,rgba(255,251,235,.78),transparent 58%),radial-gradient(ellipse at 88% 92%,rgba(150,105,45,.3),transparent 55%),linear-gradient(180deg,#f1e5c8,#e2d0a2);border:2px solid var(--edge);border-radius:3px 7px 4px 8px/7px 3px 8px 4px;box-shadow:inset 0 0 0 1px rgba(255,248,225,.65),inset 0 0 26px rgba(122,84,30,.4),0 6px 18px rgba(20,10,0,.55);color:var(--ink)}
@@ -755,11 +765,237 @@ var IDLE={
  warren:"The echo of Mercy Otis Warren waits, pen in hand.",rbg:"The echo of Ruth Bader Ginsburg waits, a lace collar bright in the light.",jmarshall:"The echo of Chief Justice Marshall stands in his black robe.",douglass:"The echo of Frederick Douglass stands very still.",paul:"The echo of Alice Paul waits, a purple sash catching the light.",fdr:"The echo of Franklin Roosevelt waits with a cigarette holder tilted upward.",king:"The echo of Martin Luther King Jr. stands with his head slightly bowed.",madisong:"The echo of the older James Madison waits, a little bent."
 };
 
+var NPC_SC={"madison91":[1],"warren":[1],"mason91":[1],"c1a":[1],"c1b":[1],"c1c":[1],"marshall":[2],"jefferson":[2],"c2a":[2],"c2b":[2],"c2c":[2],"douglass65":[3],"stevens":[3],"revels":[3],"c3a":[3],"c3b":[3],"c3c":[3],"lafollette":[4],"wheeler":[4],"paul":[4],"c4a":[4],"c4b":[4],"c4c":[4],"fdr":[5],"sabin":[5],"truman":[5],"c5a":[5],"c5b":[5],"c5c":[5],"king":[6],"bayh":[6],"c6a":[6],"c6b":[6],"c6c":[6],"watson":[7],"c7a":[7],"c7b":[7],"c7c":[7],"c8a":[8],"c8b":[8]};
+IDLE.madison91="Madison keeps his hands in his coat against the cold and looks pleased, for once.";
+IDLE.warren="Mercy Otis Warren pulls her shawl tight. She wrote against the Constitution without a bill of rights, and she is watching to see it fixed.";
+IDLE.mason91="George Mason leans on his cane. He wrote Virginia's Declaration of Rights in 1776 and will not live to see the next election.";
+IDLE.c1a="An apprentice stamps his feet in the snow. “Mr. Franklin's old trade is safer now,” he says, “now that Congress cannot make laws about the press.”";
+IDLE.c1b="A militiaman rubs his hands over a brazier. His musket hangs on a peg at home, and he hopes it stays there.";
+IDLE.c1c="A market woman sells roasted chestnuts. “Soldiers boarding in our houses,” she mutters. “My mother remembered that.”";
+IDLE.marshall="John Marshall studies the dust on his boots. The Supreme Court meets in a borrowed room in the Capitol.";
+IDLE.jefferson="Thomas Jefferson walks the muddy avenue in plain clothes, which is how he likes it.";
+IDLE.c2a="A stonemason squints up at the unfinished Capitol. “They say it will be grand in a hundred years,” he says.";
+IDLE.c2b="A surveyor measures the new avenue with a chain. The capital is mostly swamp, forest and plans.";
+IDLE.c2c="A wagon driver tips his hat. “Cows still graze on the Mall,” he says, shaking his head.";
+IDLE.douglass65="Frederick Douglass stands very straight. He has spent his life asking this nation to keep its own promises.";
+IDLE.stevens="Thaddeus Stevens, the Radical Republican, grips his cane and scowls at anyone who counsels patience.";
+IDLE.revels="Hiram Revels, soon to be the first Black member of the Senate, straightens his coat and looks at the Capitol.";
+IDLE.c3a="A Union soldier leans on his rifle, thin and tired. “I would like to go home now,” he says.";
+IDLE.c3b="A freedman clutches a paper with his name written on it, spelled out carefully. It is the first time anyone has written it down for him.";
+IDLE.c3c="A freedwoman holds a child by the hand. “We are going to school,” she says, “all of us.”";
+IDLE.lafollette="Robert La Follette tosses a stack of pamphlets onto a bench. He is proud of what Wisconsin's reforms have already accomplished.";
+IDLE.wheeler="Wayne Wheeler, the Anti-Saloon League's lawyer, taps a thick folder. He knows exactly how many votes he has.";
+IDLE.paul="Alice Paul checks the purple, white and gold sash of a marcher. She does not intend to lose.";
+IDLE.c4a="A suffragist in a white dress holds a banner pole steady. “Our time is coming,” she says.";
+IDLE.c4b="A newsboy waves a paper. “Extra! Extra! Read all about it!”";
+IDLE.c4c="A motorist tinkers under the hood of his automobile. “Nobody ever walked this fast,” he says.";
+IDLE.fdr="Franklin Roosevelt tilts his chin up, cigarette holder in hand. He sounds like he has not lost a single night's sleep, though he has.";
+IDLE.sabin="Pauline Sabin, once a Prohibition supporter, now leads the women who want it repealed.";
+IDLE.truman="Harry Truman clutches a newspaper. He has the hardest job in the country and a very plain way of talking about it.";
+IDLE.c5a="A man in a threadbare coat waits in the breadline. “It was good work, once,” he says, “and I would take it again.”";
+IDLE.c5b="A woman in a faded dress waits her turn. She counts coins in her pocket twice.";
+IDLE.c5c="A man leans toward a radio shop window. “Hush,” he says. “The President is about to speak.”";
+IDLE.king="Martin Luther King Jr. looks at the Capitol dome. “The arc is long,” he says, “but it bends.”";
+IDLE.bayh="Senator Birch Bayh of Indiana shuffles papers on two amendments he is shepherding through Congress.";
+IDLE.c6a="A marcher hoists a hand-lettered sign. “We are not going to be patient anymore,” she says.";
+IDLE.c6b="A TV reporter checks his microphone cord. Every living room in America is about to see this.";
+IDLE.c6c="A young man in a draft-board envelope jacket frowns. “Old enough to fight,” he says, “but not to vote.”";
+IDLE.watson="Gregory Watson, a University of Texas student, flips through a stack of letters addressed to state legislators.";
+IDLE.c7a="A student with a backpack hurries to class. “Did you hear? Somebody got a C for a paper about the Constitution.”";
+IDLE.c7b="A student studies on a bench. “My roommate mailed letters to every state legislature,” she says. “It was a whole thing.”";
+IDLE.c7c="A professor with a coffee mug smiles. “He got a C on that paper,” he says. “History eventually corrected the grade.”";
+IDLE.c8a="A visitor reads a plaque about the Convention. “Wow,” she says. “So it really was written right here.”";
+IDLE.c8b="A teacher gathers a class by the State House steps. “Now,” she says, “who can tell me what Article V is for?”";
+
+/* ============ SCENES: every era is its own place, look, and cast ============ */
+var EPI=16;/* chapter of the epilogue (Constitution Day) */
+function sceneOf(ch){return ch<=8?0:ch>=EPI?8:ch-8;}
+var SCENES=[
+ {key:"signing",part:"Part 1",title:"The Signing",year:"1787",place:"Philadelphia, the Pennsylvania State House",
+  cap:"May to September 1787. Philadelphia swelters while delegates argue behind shuttered windows.",
+  sky:["#7db6e6","#f7ecd0","#4a3f86","#ff9a54"],amb:["#e8dcc4","#a890b8"],sun:["#fff3cf","#ffb870"],sunI:.82,ambI:.66,fog:1,
+  grass:["#5c9c2c","#b3a24c"],leaf:["#2f6a2f","#c9902e"],leafK:null,street:"straw",walk:"brick",filter:"",weather:"leaf",tint:"",amb2:[[255,243,214],[128,128,168]],props:[]},
+ {key:"bor",part:"Part 2",title:"The Bill of Rights",year:"1791",place:"Philadelphia, snowbound in December",
+  cap:"December 15, 1791. Snow lies on the State House yard. Virginia has just cast the vote that makes ten amendments part of the Constitution.",
+  sky:["#8e9db3","#d5dde8","#6c7a94","#e8d8c8"],amb:["#c8d4e8","#a8b4d0"],sun:["#fff4e0","#ffd8b0"],sunI:.55,ambI:.8,fog:1.9,
+  grass:["#e8eef4","#dfe8f0"],leaf:["#8a8f94","#a8aeb4"],leafK:1,bare:1,street:"snow",walk:"brick",filter:"saturate(.8) contrast(1.05) brightness(1.04)",weather:"snow",tint:"rgba(205,222,255,.2)",amb2:[[205,214,236],[170,180,214]],
+  props:[{k:"brazier",x:22,z:17,tx:15,ty:13},{k:"brazier",x:58,z:17,tx:38,ty:13},{k:"brazier",x:30,z:25,tx:21,ty:18},{k:"snowdrift",x:10,z:16,tx:7,ty:12},{k:"snowdrift",x:14,z:24,tx:10,ty:18},{k:"snowdrift",x:66,z:18,tx:46,ty:13},{k:"snowdrift",x:70,z:24,tx:49,ty:18}]},
+ {key:"early",part:"Part 3",title:"The Early Republic",year:"1795 to 1804",place:"Washington City, the half-built capital",
+  cap:"1804. Congress has moved to a half-built Washington City, where cows graze near the Capitol and dust rises from every road.",
+  sky:["#9fc8e8","#f3e8c8","#b88a5a","#f0b070"],amb:["#f0e4c8","#d0a880"],sun:["#fff0c8","#ffc080"],sunI:.95,ambI:.6,fog:1.3,
+  grass:["#9aa84a","#b09a4a"],leaf:["#7a8a3a","#a89a40"],leafK:.6,street:"dirt",walk:"dirt",filter:"sepia(.28) saturate(1.05)",weather:"dust",tint:"rgba(200,170,120,.16)",amb2:[[255,236,200],[210,170,130]],
+  props:[{k:"scaffold",x:12,z:15,tx:8,ty:11},{k:"bricks",x:18,z:17,tx:12,ty:12},{k:"cart",x:64,z:20,tx:45,ty:15},{k:"cart",x:70,z:23,tx:49,ty:17},{k:"sign",x:22,z:25,tx:15,ty:18,c:"#7a5a30"}]},
+ {key:"recon",part:"Part 4",title:"War and Reconstruction",year:"1865 to 1870",place:"Washington and the war-torn South",
+  cap:"1865. The Civil War is over. Smoke still hangs over the cities, and the nation must decide what freedom means.",
+  sky:["#8a8f96","#b8bcc0","#5a5560","#a88a78"],amb:["#b4b8bc","#8a8a98"],sun:["#e8e4dc","#d8b898"],sunI:.5,ambI:.85,fog:2.2,
+  grass:["#7a7a3a","#6a6a34"],leaf:["#6a5a3a","#5a4a30"],leafK:1,bare:1,street:"mud",walk:"slate",filter:"sepia(.55) saturate(.7) contrast(1.1) brightness(.95)",weather:"ash",tint:"rgba(60,55,50,.3)",amb2:[[176,176,176],[130,128,140]],
+  props:[{k:"tent",x:10,z:17,tx:7,ty:13},{k:"tent",x:16,z:23,tx:11,ty:18},{k:"tent",x:66,z:19,tx:46,ty:14},{k:"tent",x:72,z:24,tx:50,ty:18},{k:"cart",x:60,z:21,tx:42,ty:16},{k:"flag",x:24,z:14,tx:17,ty:12,n:35},{k:"flag",x:56,z:14,tx:39,ty:12,n:35},{k:"sign",x:20,z:26,tx:14,ty:19,c:"#b04a3a"}]},
+ {key:"prog",part:"Part 5",title:"The Progressive Era",year:"1913 to 1920",place:"An American city on the move",
+  cap:"1913 to 1920. Automobiles crowd the streets and telephone wires hum overhead, while reformers march for taxes, clean elections, temperance, and the vote.",
+  sky:["#5fa8e8","#f0f4f8","#6a6fbf","#ffb890"],amb:["#f4f0e8","#c8b8d0"],sun:["#fffbe8","#ffd0a0"],sunI:.95,ambI:.62,fog:.8,
+  grass:["#4aa83a","#5aa03a"],leaf:["#3a8a30","#4a9a34"],leafK:.1,street:"asphalt",walk:"concrete",filter:"sepia(.18) saturate(1.1) contrast(1.05)",weather:"none",tint:"",amb2:[[250,246,236],[200,184,200]],
+  props:[{k:"car",x:12,z:20,tx:8,ty:15,c:"#2a2a30"},{k:"car",x:18,z:23,tx:13,ty:17,c:"#8a2a2a"},{k:"car",x:64,z:19,tx:45,ty:14,c:"#2a4a6a"},{k:"car",x:70,z:22,tx:49,ty:16,c:"#3a3a3a"},{k:"pole",x:8,z:14,tx:5,ty:11},{k:"pole",x:26,z:26,tx:18,ty:19},{k:"pole",x:54,z:26,tx:38,ty:19},{k:"pole",x:72,z:14,tx:50,ty:11},{k:"banner",x:30,z:14,tx:21,ty:12,c:"#7a4aa0"},{k:"banner",x:50,z:14,tx:35,ty:12,c:"#d8b040"}]},
+ {key:"dep",part:"Part 6",title:"Depression, War, and the Two-Term Limit",year:"1933 to 1951",place:"Hard times in Washington",
+  cap:"1933 to 1951. Breadlines stretch down the block as a new President takes office. Radios carry the news, and the nation changes how it chooses its leaders.",
+  sky:["#a8b0b8","#d8d8d4","#6a6a78","#b0a090"],amb:["#d0d0cc","#9a98a4"],sun:["#f0ece4","#e0c8a8"],sunI:.6,ambI:.85,fog:1.6,
+  grass:["#8a8a5a","#7a7a50"],leaf:["#6a6a40","#5a5a38"],leafK:.8,street:"asphalt",walk:"concrete",filter:"grayscale(.75) contrast(1.1) brightness(.97)",weather:"dust",tint:"rgba(90,90,90,.22)",amb2:[[220,220,214],[160,158,170]],
+  props:[{k:"shack",x:8,z:17,tx:5,ty:13},{k:"shack",x:12,z:23,tx:8,ty:18},{k:"shack",x:66,z:18,tx:46,ty:13},{k:"shack",x:72,z:22,tx:50,ty:17},{k:"car",x:60,z:24,tx:42,ty:18,c:"#3a3a3a"},{k:"sign",x:22,z:16,tx:15,ty:12,c:"#8a8a8a"},{k:"pole",x:74,z:14,tx:52,ty:11}]},
+ {key:"civil",part:"Part 7",title:"The Civil Rights Era",year:"1961 to 1971",place:"Washington during the movement",
+  cap:"1961 to 1971. Television carries marches, sit-ins, and a war in Vietnam into every living room. Americans are demanding that the Constitution's promises apply to everyone.",
+  sky:["#3a9af0","#e8f6ff","#e87a5a","#ffd070"],amb:["#f8f4ec","#e0c8b8"],sun:["#fffff0","#ffd890"],sunI:1,ambI:.62,fog:.6,
+  grass:["#3ab84a","#40b040"],leaf:["#2aa040","#38a840"],leafK:0,street:"lined",walk:"concrete",filter:"saturate(1.4) contrast(1.08)",weather:"none",tint:"",amb2:[[255,250,240],[225,200,185]],
+  props:[{k:"car",x:10,z:19,tx:7,ty:14,c:"#d8c8a8"},{k:"car",x:16,z:23,tx:11,ty:17,c:"#3a6aa0"},{k:"car",x:66,z:20,tx:46,ty:15,c:"#b04a4a"},{k:"sign",x:24,z:18,tx:17,ty:13,c:"#f0f0f0"},{k:"sign",x:26,z:22,tx:18,ty:16,c:"#f0f0f0"},{k:"sign",x:52,z:18,tx:37,ty:13,c:"#f0f0f0"},{k:"sign",x:54,z:22,tx:38,ty:16,c:"#f0f0f0"},{k:"tv",x:30,z:25,tx:21,ty:18},{k:"flag",x:22,z:14,tx:16,ty:12,n:50},{k:"flag",x:58,z:14,tx:41,ty:12,n:50}]},
+ {key:"modern",part:"Part 8",title:"A Student Revives an Amendment",year:"1982 to 1992",place:"A university campus in Texas",
+  cap:"1982 to 1992. On a college campus in Austin, a student finds an amendment that has been waiting for two centuries.",
+  sky:["#4aa6f0","#eaf4ff","#5a7ad0","#f8c8a0"],amb:["#f4f6fa","#d0d4e0"],sun:["#fffdf4","#ffe0b8"],sunI:.9,ambI:.66,fog:.5,
+  grass:["#58b848","#58b448"],leaf:["#3a9a40","#4a9a40"],leafK:0,street:"lined",walk:"brick",filter:"saturate(1.15) contrast(1.04)",weather:"none",tint:"",amb2:[[250,252,255],[210,214,228]],
+  props:[{k:"car",x:10,z:20,tx:7,ty:15,c:"#9a2a2a"},{k:"car",x:16,z:23,tx:11,ty:17,c:"#2a6a9a"},{k:"car",x:66,z:19,tx:46,ty:14,c:"#3a8a4a"},{k:"rack",x:62,z:24,tx:43,ty:18},{k:"sign",x:24,z:26,tx:17,ty:19,c:"#bf5700"},{k:"flag",x:40,z:14,tx:28,ty:12,n:50}]},
+ {key:"epilogue",part:"Epilogue",title:"Constitution Day",year:"Today",place:"Philadelphia, golden hour",
+  cap:"Constitution Day, today. The plaza is quiet and the Hall of Echoes stands open at last.",
+  sky:["#6ab0f0","#fff0d0","#4a4a9a","#ffb070"],amb:["#f4e8d4","#b8a0c0"],sun:["#fff4d0","#ffb870"],sunI:.9,ambI:.65,fog:.8,
+  grass:["#5ab044","#6ab040"],leaf:["#3a9a34","#4a9a34"],leafK:0,street:"lined",walk:"brick",filter:"saturate(1.1)",weather:"leaf",tint:"",amb2:[[255,244,226],[190,170,200]],
+  props:[{k:"flag",x:22,z:14,tx:16,ty:12,n:50},{k:"flag",x:58,z:14,tx:41,ty:12,n:50},{k:"flag",x:30,z:26,tx:21,ty:19,n:50},{k:"flag",x:50,z:26,tx:35,ty:19,n:50}]}
+];
+function curScene(){return SCENES[sceneOf(S.ch)];}
+function sceneAms(k){var out=[];GUIDES.forEach(function(g){if(g.scene===k)out=out.concat(g.ams);});return out;}
+function sceneT(){var k=sceneOf(S.ch);if(k===0)return Math.min(1,S.ch/8);var a=sceneAms(k);if(!a.length)return .5;var d=a.filter(function(n){return S.am&&S.am[n];}).length;return d/a.length;}
+function npcHere(n){var l=NPC_SC[n.id];return(l||[0]).indexOf(sceneOf(S.ch))>=0;}
+/* ============ HOW WE GOT HERE: dated events behind every amendment ============ */
+var EVENTS={
+ 1:[["1735","A New York jury frees printer John Peter Zenger, who published criticism of the royal governor."],["1765","Parliament taxes printed paper in the Stamp Act, and colonial printers lead the protests."],["1786","Virginia adopts the Statute for Religious Freedom, written by Thomas Jefferson and defended by James Madison."],["1788","Ratifying conventions, including Virginia's and New York's, ask for written protection of speech, press, and religion."]],
+ 2:[["1775","Militiamen fight British regulars at Lexington and Concord, starting the Revolutionary War."],["1776","The Declaration of Independence complains of “Standing Armies” kept in peacetime without consent."],["1787","The Convention gives Congress power over the militia, and critics fear states will lose control of their own."],["1788","Virginia and other ratifying conventions propose adding a right to keep arms."]],
+ 3:[["1765","Parliament passes the Quartering Act, requiring colonies to house and supply British soldiers."],["1768","British troops arrive in Boston to enforce customs duties."],["1774","The Intolerable Acts renew quartering after the Boston Tea Party."],["1776","The Declaration lists quartering large bodies of armed troops among the colonists' grievances."]],
+ 4:[["1761","Boston lawyer James Otis argues against writs of assistance, general warrants to search any home."],["1765","In Entick v. Carrington an English court rules that a general warrant cannot justify entering a home."],["1768","Customs officers seize John Hancock's ship Liberty in Boston, inflaming the town."],["1788","Several state conventions ask for protection against unreasonable searches and seizures."]],
+ 5:[["1641","Parliament abolishes the Star Chamber, a secret court that forced confessions."],["1689","The English Bill of Rights limits arbitrary punishment and requires fair procedures."],["1776","Virginia's Declaration of Rights, written by George Mason, guarantees fair trials and a right against self-incrimination."],["1780s","States seize the property of Loyalists during and after the Revolution, raising questions about fair compensation."]],
+ 6:[["1735","The Zenger trial shows the power of a local jury against a royal governor."],["1768","British vice-admiralty courts try colonial smuggling cases without juries."],["1774","Parliament allows officials accused of crimes in the colonies to be tried in England."],["1776","The Declaration complains of “the benefits of Trial by Jury” being denied and of being transported overseas for trial."]],
+ 7:[["1787","The Convention writes jury trials for crimes into Article III but says nothing about civil juries."],["1787","Delegates including Elbridge Gerry and George Mason object to the missing protections."],["1787","The Anti-Federalist “Federal Farmer” letters warn that civil juries could be abolished."],["1789","Madison includes civil juries in the amendments he sends to Congress."]],
+ 8:[["1689","The English Bill of Rights bans excessive bail, excessive fines, and cruel and unusual punishments."],["1776","Virginia's Declaration of Rights repeats the language in its Section 9."],["1788","Patrick Henry and George Mason warn the Virginia convention that Congress could use torture."],["1789","Madison draws the Eighth Amendment from Virginia's language."]],
+ 9:[["Oct 1787","James Wilson argues in Philadelphia that a bill of rights is unnecessary because the government has only delegated powers."],["1788","Opponents answer that a list of rights is needed anyway."],["1788","Madison writes to Jefferson about the danger that listing rights could suggest that unlisted rights do not exist."],["1789","Madison proposes the Ninth Amendment as a safeguard."]],
+ 10:[["1781","The Articles of Confederation reserve to each state every power not expressly delegated."],["1787","The Convention shifts significant power to the national government."],["1788","New York, Virginia, and others ask for an amendment keeping unlisted powers with the states."],["1789","Madison proposes what becomes the Tenth Amendment."]],
+ 11:[["Feb 1793","In Chisholm v. Georgia the Supreme Court allows a South Carolina man to sue the state of Georgia."],["1793","Georgia's legislature passes a bill declaring anyone who enforces the ruling guilty of a felony punishable by death."],["Mar 1794","Congress proposes the Eleventh Amendment, in reply to the Court."],["Feb 1795","The states ratify it, the first amendment to overturn a Supreme Court decision."]],
+ 12:[["1796","John Adams wins the Presidency and his political rival Thomas Jefferson becomes Vice President."],["Feb 1801","Jefferson and Aaron Burr tie with 73 electoral votes each, and the House takes 36 ballots to choose Jefferson."],["Dec 1803","Congress proposes the Twelfth Amendment."],["Jun 1804","The states ratify it in time for the next election."]],
+ 13:[["1857","The Supreme Court decides Dred Scott v. Sandford, ruling that Black Americans cannot be citizens."],["Jan 1863","President Lincoln issues the Emancipation Proclamation as a war measure."],["Jan 1865","The House passes the Thirteenth Amendment after Lincoln lobbies for its passage."],["Dec 1865","The states ratify it, and slavery ends across the nation."]],
+ 14:[["1865 to 1866","Southern states pass Black Codes limiting the rights of formerly enslaved people."],["1866","Riots in Memphis and New Orleans kill dozens of Black residents and their allies."],["Apr 1866","Congress passes the Civil Rights Act over President Johnson's veto."],["Jul 1868","The Fourteenth Amendment is ratified, placing its guarantees in the Constitution."]],
+ 15:[["1867","The Reconstruction Acts require Southern states to write new constitutions that include Black men's voting rights."],["1868","Black voters help elect Ulysses S. Grant President."],["Feb 1869","Congress passes the Fifteenth Amendment."],["Feb 1870","The amendment is ratified, and Hiram Revels takes his seat as the first Black senator."]],
+ 16:[["1894","Congress passes a federal income tax."],["1895","The Supreme Court strikes it down in Pollock v. Farmers' Loan & Trust."],["1909","Congress proposes the Sixteenth Amendment."],["Feb 1913","The states ratify it, and Congress may tax incomes."]],
+ 17:[["1890s to 1900s","State legislatures deadlock over Senate seats, and Delaware leaves one empty for years."],["1904","Oregon begins letting voters pick Senate candidates, and other states follow."],["1912","Congress proposes the Seventeenth Amendment."],["Apr 1913","The states ratify it, and Senators are chosen by direct popular vote."]],
+ 18:[["1873 to 1874","The Woman's Christian Temperance Union is founded."],["1893","The Anti-Saloon League forms and becomes a powerful political force."],["Dec 1917","Congress proposes Prohibition during World War I."],["Jan 1919","The states ratify it, and the Volstead Act enforces it later that year."]],
+ 19:[["1848","The Seneca Falls convention demands the vote for women."],["1869","Wyoming Territory becomes the first place where women can vote."],["1913 to 1917","Alice Paul organizes a Washington suffrage parade and then pickets the White House."],["Aug 1920","Tennessee becomes the 36th state to ratify, and the amendment takes effect."]],
+ 20:[["Mar 1932","Congress proposes the Twentieth Amendment, led by Senator George Norris."],["Nov 1932","Voters defeat President Hoover, but the old calendar keeps him in office until March."],["Winter 1932 to 1933","Banks fail across the country while the outgoing and incoming administrations argue."],["Jan 1933","The states ratify the amendment, ending the long wait between an election and a new government."]],
+ 21:[["1929","The stock market crash begins the Great Depression."],["1932","The Democratic platform calls for repealing Prohibition."],["Feb 1933","Congress proposes repeal and sends it to state conventions."],["Dec 1933","Utah becomes the 36th state to ratify, and Prohibition ends."]],
+ 22:[["1940 to 1944","Franklin Roosevelt wins third and fourth terms."],["Apr 1945","Roosevelt dies in office."],["Mar 1947","A new Congress proposes limiting Presidents to two terms."],["Feb 1951","The states ratify the Twenty-second Amendment."]],
+ 23:[["1800","Congress moves to the new capital, and residents lose a vote in any state."],["1950s","The District's population grows larger than that of several states, but it still has no presidential vote."],["Jun 1960","Congress proposes the Twenty-third Amendment."],["Mar 1961","The states ratify it, in time for the 1964 election."]],
+ 24:[["1890 to 1908","Southern states adopt poll taxes to keep poor and Black citizens from voting."],["Aug 1962","Congress proposes the Twenty-fourth Amendment."],["Jan 1964","The states ratify it, and that summer Freedom Summer volunteers register Black voters in Mississippi."],["1965","The Voting Rights Act follows, extending federal protection of the vote."]],
+ 25:[["Nov 1963","President Kennedy is assassinated, and Lyndon Johnson takes office with no Vice President until January 1965."],["1955 to 1956","President Eisenhower's illnesses raise questions about who would act if a President could not."],["Jul 1965","Congress proposes the Twenty-fifth Amendment."],["Feb 1967","The states ratify it."]],
+ 26:[["1942","Congress lowers the draft age to 18 during World War II."],["1965 to 1970","The Vietnam War drafts young men who cannot vote."],["Dec 1970","In Oregon v. Mitchell the Court says Congress cannot lower the voting age for state elections by statute."],["Mar to Jul 1971","Congress proposes the amendment and the states ratify it in about 100 days, the fastest ever."]],
+ 27:[["1789","Madison proposes an amendment about congressional pay as part of the first twelve."],["1791","Only six states ratify it, and it stalls."],["1982","University of Texas student Gregory Watson writes a paper arguing it can still be ratified, and earns a C."],["May 1992","Michigan becomes the 38th state to ratify, 202 years after the proposal."]]
+};
+/* ============ SCENE CHANGE: a title card, then the world is rebuilt ============ */
+var sceneBusy=false;
+function showSceneCard(sc,apply,done){
+  sceneBusy=true;setModal(true);
+  var card=el("div",{id:"sceneCard",role:"dialog","aria-label":sc.part+": "+sc.title});
+  var inner=el("div",{class:"sc-in"},el("p",{class:"sc-part"},sc.part),el("h2",null,sc.title),el("p",{class:"sc-year"},sc.year),el("p",{class:"sc-place"},sc.place),el("p",{class:"sc-cap"},sc.cap));
+  var go=el("button",{class:"go",type:"button"},"Begin ▼");inner.append(go);card.append(inner);document.body.append(card);
+  requestAnimationFrame(function(){card.classList.add("on");});
+  var applied=false,closed=false;
+  setTimeout(function(){if(!applied){applied=true;try{apply();}catch(e){console.error(e);}}},650);
+  function close(){if(closed)return;if(!applied){applied=true;try{apply();}catch(e){console.error(e);}}closed=true;window.removeEventListener("keydown",key,true);card.classList.remove("on");setTimeout(function(){card.remove();sceneBusy=false;setModal(false);if(done)done();},600);}
+  function key(e){if(e.key==="Enter"||e.key==="e"||e.key==="E"||e.key==="z"||e.key==="Z"||e.key===" "){e.preventDefault();e.stopPropagation();close();}}
+  window.addEventListener("keydown",key,true);go.addEventListener("click",close);setTimeout(function(){try{go.focus();}catch(e){}},700);
+  card.__close=close;
+}
+function checkScene(){
+  var ns=sceneOf(S.ch);
+  if(S.scene===ns)return;
+  S.scene=ns;save();
+  showSceneCard(SCENES[ns],function(){applyScene(ns,false);},function(){refreshHud();});
+}
+
+function setEraTag(){var sc=curScene(),t=$("eraTag");if(!t){t=el("div",{id:"eraTag","aria-live":"polite"});document.body.append(t);}t.textContent=sc.year+" · "+sc.title;}
+
+/* ============ GUIDES: who walks you through each era ============ */
+var GUIDES=[
+ {id:"madison91",name:"James Madison",scene:1,ams:[1,2,3],
+  intro:"December 15, 1791. Snow is falling on Philadelphia, the temporary capital. Virginia has just ratified, and ten amendments will join the Constitution. James Madison, who wrote them, meets you on the State House steps. The first three protect the freedoms of the mind, the militia, and the home.",
+  outro:"Madison nods toward Mercy Otis Warren, who is waiting by a brazier. She argued for these protections before most people did."},
+ {id:"warren",name:"Mercy Otis Warren",scene:1,ams:[4,5,6,7],
+  intro:"Mercy Otis Warren, a Massachusetts writer and Anti-Federalist, warned in 1788 that a Constitution without a bill of rights left liberty at the mercy of rulers. Now she walks you through four amendments about searches, fair procedures, trials, and juries.",
+  outro:"Warren points toward George Mason, who refused to sign the Constitution over this very point."},
+ {id:"mason91",name:"George Mason",scene:1,ams:[8,9,10],
+  intro:"George Mason of Virginia wrote the Virginia Declaration of Rights in 1776 and refused to sign the Constitution without one. He takes you through the last three amendments in the Bill of Rights, on punishment, on rights the list does not name, and on the powers kept by the states.",
+  outro:"That completes the Bill of Rights. The Constitution will need more changes in the years ahead, and the snow is already thinning."},
+ {id:"marshall",name:"John Marshall",scene:2,ams:[11],
+  intro:"It is 1804 in Washington City, a capital still being built. Chief Justice John Marshall, who has led the Supreme Court for three years, remembers an early test of the Court's power. In 1793 the Court allowed a private citizen to sue a state, and the states answered with the Eleventh Amendment.",
+  outro:"Marshall points toward President Jefferson, who is walking the muddy avenue and thinking about the last election."},
+ {id:"jefferson",name:"Thomas Jefferson",scene:2,ams:[12],
+  intro:"Thomas Jefferson, now in his first term as President, lived through the strangest election in the nation's history. The Constitution's rules for the Electoral College nearly failed in 1800, and a repair is already being ratified.",
+  outro:"That is the end of this era. The country is growing quickly, and its hardest question is still ahead."},
+ {id:"douglass65",name:"Frederick Douglass",scene:3,ams:[13],
+  intro:"1865. Frederick Douglass, who escaped slavery and became one of the nation's greatest speakers, says the Civil War is not enough. Law must end slavery, not just the fighting. This is the Thirteenth Amendment.",
+  outro:"Douglass says freedom on paper means little without rights. Congressman Thaddeus Stevens is working on that."},
+ {id:"stevens",name:"Thaddeus Stevens",scene:3,ams:[14],
+  intro:"Thaddeus Stevens of Pennsylvania, a leader of the Radical Republicans, insists the nation must guarantee citizenship and equal treatment, or the South will rebuild slavery under another name. This is the Fourteenth Amendment.",
+  outro:"Stevens turns to a man in a plain coat who is about to enter the Senate."},
+ {id:"revels",name:"Hiram Revels",scene:3,ams:[15],
+  intro:"1870. Hiram Revels, a Black minister from Mississippi, is about to take the Senate seat once held by Jefferson Davis. Black men have been voting across the South, and the Fifteenth Amendment is meant to protect them.",
+  outro:"That ends Reconstruction's amendments. Their promises will take nearly a century to enforce."},
+ {id:"lafollette",name:"Robert La Follette",scene:4,ams:[16,17],
+  intro:"1913. Robert La Follette, a leader of the Progressive movement from Wisconsin, believes government should answer to ordinary people. Two new amendments, an income tax and direct election of Senators, are part of that fight.",
+  outro:"La Follette waves toward Wayne Wheeler, whose cause has the whole country talking about drinking."},
+ {id:"wheeler",name:"Wayne B. Wheeler",scene:4,ams:[18],
+  intro:"1919. Wayne Wheeler, the Anti-Saloon League's lawyer, helped win Prohibition and drafted the law that enforces it. He thinks the Constitution is the right place to settle the matter. The result will not be what its supporters expect.",
+  outro:"Wheeler tips his hat toward Alice Paul, who has been waiting a very long time."},
+ {id:"paul",name:"Alice Paul",scene:4,ams:[19],
+  intro:"1920. Alice Paul, who organized marches and was jailed for picketing the White House, is about to see the Nineteenth Amendment ratified. It comes seventy-two years after Seneca Falls.",
+  outro:"That is the Progressive Era. The nation is about to face its hardest economic test."},
+ {id:"fdr",name:"Franklin D. Roosevelt",scene:5,ams:[20],
+  intro:"Winter 1933. Franklin Roosevelt waits for a March inauguration while banks fail around the country. The Twentieth Amendment, ratified that January, will end this kind of long wait for future Presidents.",
+  outro:"Roosevelt looks across the plaza to Pauline Sabin, who has been fighting a different battle."},
+ {id:"sabin",name:"Pauline Sabin",scene:5,ams:[21],
+  intro:"Pauline Sabin, a Republican who once supported Prohibition, came to believe it had made crime worse. She led women across the country to demand repeal, and the Twenty-first Amendment ended Prohibition in December 1933.",
+  outro:"Sabin shakes hands with President Truman, who is thinking about a different limit on power."},
+ {id:"truman",name:"Harry Truman",scene:5,ams:[22],
+  intro:"1951. Harry Truman became President when Roosevelt died in 1945. A Republican Congress proposed the Twenty-second Amendment, and Truman himself was exempt from it, though he chose not to run again in 1952.",
+  outro:"That is the end of the Depression and war era. A new generation is about to demand that the Constitution mean what it says."},
+ {id:"king",name:"Martin Luther King Jr.",scene:6,ams:[23,24],
+  intro:"1961 to 1964. Martin Luther King Jr. leads a movement that insists the Constitution's promises belong to every citizen. Two amendments of this era reach for that promise: one gives Washington, D.C. a voice in presidential elections, and one ends poll taxes.",
+  outro:"King nods to Senator Birch Bayh of Indiana, who is working on two more."},
+ {id:"bayh",name:"Birch Bayh",scene:6,ams:[25,26],
+  intro:"Senator Birch Bayh of Indiana wrote both the Twenty-fifth and the Twenty-sixth Amendments. The first answered the shock of a presidential assassination, and the second answered a war that drafted eighteen-year-olds who could not vote.",
+  outro:"That is the civil rights era. One last amendment is still waiting, and it has been waiting for a very long time."},
+ {id:"watson",name:"Gregory Watson",scene:7,ams:[27],
+  intro:"1992. Gregory Watson was an undergraduate at the University of Texas in 1982 when he wrote a paper arguing that a forgotten amendment from 1789 could still be ratified. His professor gave him a C. He decided to prove the paper right.",
+  outro:"With that, you have followed the Constitution from its signing to its newest amendment. The Hall of Echoes is open, and a monument inside is waiting for your reflection."}
+];
+/* the old Hall of Echoes ghosts are gone: every era is a real scene */
+GHOSTS.length=0;
+ENC=ENC.filter(function(e){return e.id!=="madison1"&&!/^gh_/.test(e.id);});
+function amendBeats(a){
+  var k="am"+a.n;
+  return [
+   N("Amendment "+ROMAN[a.n]+" ("+a.year+"): "+a.name+". "+a.ctx),
+   {k:"list",name:"How we got here",intro:"These are the key events that led up to Amendment "+ROMAN[a.n]+":",items:EVENTS[a.n],outro:"Keep these dates in mind for your analysis."},
+   {k:"q",s:SRC[k]},
+   L(a.lens[0],a.lens[1]),
+   MC(k+".m",a.check),
+   NT(k+".n",{title:"Amendment "+ROMAN[a.n]+": your analysis",min:20,pts:50,
+    prompt:{intro:"In a short analysis of Amendment "+ROMAN[a.n]+" ("+a.name+"), address both questions:",items:["What freedoms does this amendment protect, provide, or take away?","What era of American history was it written in, and what context does that provide for the amendment?"],tip:"Two to four sentences is plenty. Use the timeline and the quote you just read."},
+    store:function(t){S.am=S.am||{};S.am[a.n]=t;}})
+  ];
+}
+GUIDES.forEach(function(g){
+  var mates=GUIDES.filter(function(x){return x.scene===g.scene;}),idx=mates.indexOf(g),last=idx===mates.length-1;
+  ENC.push({id:"gd_"+g.id,npc:g.id,ch:8+g.scene,req:idx>0?"gd_"+mates[idx-1].id:null,
+   beats:function(){var bs=[N(g.intro)];g.ams.forEach(function(n){bs=bs.concat(amendBeats(AMENDS[n-1]));});bs.push(N(g.outro));return bs;},
+   after:function(){if(last)S.ch=9+g.scene;}});
+});
+
 var TOTAL=Object.keys(CARDS).length;
 var GRIEVANCES=[];
 /* ============ STATE ============ */
 var KEY="convention_1787_rpg_v1";
-function fresh(){return{name:"",started:false,ch:0,x:28*T+8,y:15*T+8,dir:"d",pts:0,cards:{},b:{},enc:{},g:{},ped:{},gOrder:[],bonus5:false,note1:"",refl:"",done:false,art:{},am:{}};}
+function fresh(){return{name:"",started:false,ch:0,x:28*T+8,y:15*T+8,dir:"d",pts:0,cards:{},b:{},enc:{},g:{},ped:{},gOrder:[],bonus5:false,note1:"",refl:"",done:false,art:{},am:{},scene:0};}
 function load(){try{var r=localStorage.getItem(KEY);if(r)return Object.assign(fresh(),JSON.parse(r));}catch(e){}return fresh();}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
 var S=load();
@@ -874,15 +1110,42 @@ var LOOK={
  rider:{coat:"#7a5a3a",vest:"#bba878",hair:"#4a3020",hat:"tricorn",hatCol:"#3a2a1c",prop:"satchel",seed:9},
  seller:{coat:"#8e7f5e",vest:"#e8e2d2",hair:"#5a4030",hat:"cap",hatCol:"#d8d0b8",seed:10},
  courier:{coat:"#6f7480",vest:"#d0ccc0",hair:"#7a5a30",hat:"cap",hatCol:"#4a4f5a",prop:"letter",seed:11},
- warren:{ghost:1,coat:"#7a4a6a",vest:"#e8dce8",skirt:1,skirtCol:"#6a3c5a",hat:"bonnet",hatCol:"#d8c8d8",hair:"#4a3a30",skin:"#f0cfb0",seed:12},
- rbg:{ghost:1,coat:"#1c1c28",vest:"#e8e4f0",skirt:1,skirtCol:"#1c1c28",hair:"#4a3c34",skin:"#f0cfb0",seed:13},
- jmarshall:{ghost:1,coat:"#1a1a22",vest:"#d8d8e0",hair:"#2a2220",skin:"#e0b894",tall:3,age:1,seed:14},
- douglass:{ghost:1,coat:"#24262e",vest:"#cfcbd6",skin:"#8a5a3a",hair:"#4a4448",hairStyle:"long",tall:2,age:2,seed:15},
- paul:{ghost:1,coat:"#cfc8e0",vest:"#eeeaf4",skirt:1,skirtCol:"#c4bcd8",hair:"#3a2a22",skin:"#f0cfb0",seed:16},
- fdr:{ghost:1,coat:"#2a2c3a",vest:"#cfcfd8",hair:"#5a5a60",glasses:1,skin:"#e0b894",age:1,seed:17},
- king:{ghost:1,coat:"#2a2e3c",vest:"#e4e4ea",skin:"#7a4e34",hair:"#15110f",mustache:"#15110f",seed:18},
  sentry:{coat:"#3a4a6a",vest:"#d8d0b8",hair:"#2a2220",hat:"tricorn",hatCol:"#1c1c24",seed:20},
- madisong:{ghost:1,coat:"#2a2a32",vest:"#d8d0b8",hair:"#cfcac0",age:2,seed:19},
+ madison91:{coat:"#3a3a44",vest:"#cfc8b4",hair:"#8a8478",hairStyle:"powder",age:1,hat:"tricorn",hatCol:"#1c1c24",seed:31},
+ warren:{coat:"#6a3c58",vest:"#e8dce8",skirt:1,skirtCol:"#5a2f4a",hat:"bonnet",hatCol:"#d8c8d8",hair:"#4a3a30",skin:"#f0cfb0",seed:32},
+ mason91:{coat:"#4a3a2a",vest:"#c8b890",hair:"#8a8478",hairStyle:"powder",age:2,hat:"tricorn",hatCol:"#2a1f16",seed:33},
+ printer:{coat:"#5a5648",vest:"#e0d8c0",hair:"#3a2a20",hat:"cap",hatCol:"#6a5a40",seed:34},
+ militiaman:{coat:"#6a5a3a",vest:"#d8d0b8",hair:"#4a3020",hat:"tricorn",hatCol:"#3a2a1c",seed:35},
+ shawlwoman:{coat:"#7a5a4a",vest:"#e8dcc8",skirt:1,skirtCol:"#6a4a3a",hat:"bonnet",hatCol:"#cfc0a8",hair:"#5a4030",skin:"#f0cfb0",seed:36},
+ marshall:{coat:"#1a1a22",vest:"#e0e0e8",hair:"#2a2220",skin:"#e0b894",tall:3,age:1,seed:37},
+ jefferson:{coat:"#7a2f2f",vest:"#d8c8a0",hair:"#b8693a",tall:3,age:1,seed:38},
+ mason_worker:{coat:"#8a7a5a",vest:"#bba878",hair:"#4a3020",hat:"cap",hatCol:"#a08a5a",seed:39},
+ surveyor:{coat:"#4a5a3a",vest:"#d8d0b8",hair:"#2a2220",hat:"cap",hatCol:"#3a3a2a",prop:"letter",seed:40},
+ douglass:{coat:"#24262e",vest:"#cfcbd6",skin:"#8a5a3a",hair:"#4a4448",hairStyle:"long",tall:2,age:2,seed:15},
+ stevens:{coat:"#1c1c26",vest:"#d8d4c8",hair:"#4a4036",age:2,skin:"#e0b894",seed:41},
+ revels:{coat:"#26283a",vest:"#e4e0d6",skin:"#8a5a3a",hair:"#1a1512",mustache:"#1a1512",seed:42},
+ soldier:{coat:"#2f4a7a",vest:"#cfd2da",hair:"#4a3020",hat:"cap",hatCol:"#2a3a5a",seed:43},
+ freedman:{coat:"#6a5a48",vest:"#d8d0b8",skin:"#7a4e34",hair:"#15110f",hat:"cap",hatCol:"#8a7a5a",seed:44},
+ freedwoman:{coat:"#8a5a6a",vest:"#e8dcd0",skirt:1,skirtCol:"#7a4a5a",hat:"bonnet",hatCol:"#e8e0d0",skin:"#7a4e34",hair:"#15110f",seed:45},
+ lafollette:{coat:"#3a3a40",vest:"#cfc8b8",hair:"#7a7a7a",age:1,seed:46},
+ wheeler:{coat:"#4a3a2a",vest:"#d8d0b8",hair:"#3a2a20",glasses:1,hat:"cap",hatCol:"#2a2a30",seed:47},
+ paul:{coat:"#f0ece4",vest:"#7a4aa0",skirt:1,skirtCol:"#eae6f2",hair:"#3a2a22",skin:"#f0cfb0",seed:48},
+ suffragist:{coat:"#e8e4dc",vest:"#7a4aa0",skirt:1,skirtCol:"#e0dcd4",hair:"#4a3a30",skin:"#f0cfb0",seed:49},
+ newsboy:{coat:"#6a5a48",vest:"#c8c0a8",hair:"#7a5a30",hat:"cap",hatCol:"#8a7a5a",seed:50},
+ wheeler2:{coat:"#7a6a4a",vest:"#e0d8c0",hair:"#2a2220",hat:"cap",hatCol:"#5a4a30",glasses:1,seed:51},
+ fdr:{coat:"#2a2c3a",vest:"#cfcfd8",hair:"#5a5a60",glasses:1,skin:"#e0b894",age:1,seed:17},
+ sabin:{coat:"#3a4a5a",vest:"#e8e4e0",skirt:1,skirtCol:"#3a4a5a",hair:"#8a8a8a",skin:"#f0cfb0",hat:"cap",hatCol:"#2a3a4a",seed:52},
+ truman:{coat:"#3a3a48",vest:"#d8d4cc",hair:"#8a8a8a",glasses:1,skin:"#e8c8a0",hat:"cap",hatCol:"#2a2a34",seed:53},
+ breadline:{coat:"#5a5648",vest:"#a8a090",hair:"#4a4036",hat:"cap",hatCol:"#4a4638",seed:54},
+ breadline2:{coat:"#6a5a68",vest:"#c8c0b8",skirt:1,skirtCol:"#5a4a58",hair:"#4a3a30",skin:"#f0cfb0",hat:"bonnet",hatCol:"#a8a098",seed:55},
+ king:{coat:"#2a2e3c",vest:"#e4e4ea",skin:"#7a4e34",hair:"#15110f",mustache:"#15110f",seed:18},
+ bayh:{coat:"#3a4a66",vest:"#e8e8ee",hair:"#5a4a3a",skin:"#e8c8a0",seed:56},
+ marcher:{coat:"#7a3a3a",vest:"#e8e0d8",skirt:1,skirtCol:"#5a2a2a",hair:"#2a2220",skin:"#7a4e34",seed:57},
+ reporter:{coat:"#6a5a3a",vest:"#e8e4dc",hair:"#4a3a30",glasses:1,prop:"letter",seed:58},
+ student1:{coat:"#8a4a4a",vest:"#e8e4dc",hair:"#2a2220",prop:"satchel",seed:59},
+ student2:{coat:"#4a6a8a",vest:"#e8e4dc",skirt:1,skirtCol:"#3a4a6a",hair:"#6a4a30",skin:"#f0cfb0",prop:"satchel",seed:60},
+ watson:{coat:"#4a6a8a",vest:"#e8e4dc",hair:"#6a4a30",skin:"#f0cfb0",prop:"satchel",seed:61},
+ professor:{coat:"#5a4a3a",vest:"#e4dcc8",hair:"#8a8a8a",glasses:1,age:1,seed:62},
  w1:{coat:"#7a4a4a",vest:"#e0d8c0",hair:"#3a2a20",hat:"tricorn",hatCol:"#2a2a30"},
  w2:{coat:"#4a6a5a",vest:"#e8e0c8",hair:"#8a6a3a"},
  w3:{coat:"#8a7a4a",vest:"#d8d0b8",hair:"#2a2220",hat:"cap",hatCol:"#a08a5a",wide:1}
@@ -928,18 +1191,19 @@ var gateTiles=[[16,29],[16,30]];
   /* pedestals */
   PEDS.forEach(function(g){PROPS.push({k:"ped",x:g.at[0]*T+8,y:g.at[1]*T+14,g:g.id});setSolid(g.at[0],g.at[1],1,1);});
 })();
-function gateOpen(){return S.ch>=10;}
+function gateOpen(){return S.ch>=EPI;}
 function updateGate(){gateTiles.forEach(function(g){grid[g[1]*MW+g[0]]=gateOpen()?0:1;});}
 
 /* ground canvas */
 var ground;
-function seasonK(){return Math.min(1,(S.ch||0)/9);}
+function seasonK(){var sc=curScene();return sc.key==="signing"?Math.min(1,(S.ch||0)/8):(sc.leafK==null?0:sc.leafK);}
+function grassSet(){var sc=curScene();if(sc.key==="signing")return["#5f9e45","#5a9741","#66a84b","#5b9a43"].map(function(g){return mixHex(g,"#b3a24c",seasonK()*.7);});var t=sc.grass[1];return[shade(t,0),shade(t,-.05),shade(t,.05),shade(t,-.025)];}
 function mixHex(a,b,t){var A=hex(a),B2=hex(b);return"#"+[0,1,2].map(function(i){var v=Math.round(A[i]+(B2[i]-A[i])*t);return(v<16?"0":"")+v.toString(16);}).join("");}
 var lastSeason=-1;
-function seasonRefresh(){var k=Math.round(seasonK()*20)/20;if(k===lastSeason)return;lastSeason=k;try{ground=buildGround();buildTrees();}catch(e){}}
+function seasonRefresh(){var k=Math.round(seasonK()*20)/20;if(k===lastSeason)return;lastSeason=k;try{ground=buildGround();TREE_CV.length=0;buildTrees();}catch(e){}}
 function buildGround(){
   var g=document.createElement("canvas");g.width=MW*T;g.height=MH*T;var c=g.getContext("2d"),r=mulberry(7);
-  var greens=["#5f9e45","#5a9741","#66a84b","#5b9a43"].map(function(g){return mixHex(g,"#b3a24c",seasonK()*.7);});
+  var greens=grassSet();
   for(var ty=0;ty<MH;ty++)for(var tx=0;tx<MW;tx++){
     R(c,tx*T,ty*T,T,T,greens[(r()*4)|0]);
     for(var k=0;k<5;k++){var px=tx*T+((r()*15)|0),py=ty*T+((r()*14)|0);R(c,px,py,1,2,r()<.5?"#7cc05e":"#4c8638");}
@@ -954,10 +1218,39 @@ function buildGround(){
   }
   function cobble(y0,y1){for(var yy=y0;yy<=y1;yy++)for(var xx=0;xx<MW;xx++){
     for(var cy=0;cy<4;cy++)for(var cx=0;cx<4;cx++){var v=(r()*28)|0;R(c,xx*T+cx*4,yy*T+cy*4,4,4,"rgb("+(128+v)+","+(130+v)+","+(138+v)+")");R(c,xx*T+cx*4+3,yy*T+cy*4,1,4,"#66686f");R(c,xx*T+cx*4,yy*T+cy*4+3,4,1,"#66686f");}}}
+  function streetFill(y0,y1){
+    var k=curScene().street;
+    if(k==="straw"){straw(y0,y1);return;}
+    for(var yy=y0;yy<=y1;yy++)for(var xx=0;xx<MW;xx++){
+      var v=(r()*14)|0,col;
+      if(k==="snow")col="rgb("+(228+v)+","+(234+v)+","+(244+(v>>1))+")";
+      else if(k==="mud")col="rgb("+(86+v)+","+(64+v)+","+(44+(v>>1))+")";
+      else if(k==="dirt")col="rgb("+(184+v)+","+(152+v)+","+(104+v)+")";
+      else col="rgb("+(66+v)+","+(66+v)+","+(72+v)+")";
+      R(c,xx*T,yy*T,T,T,col);
+      for(var q=0;q<7;q++){var sx=xx*T+((r()*14)|0),sy=yy*T+((r()*14)|0);
+        if(k==="snow")R(c,sx,sy,2,1,r()<.5?"#c6d2e6":"#ffffff");
+        else if(k==="mud")R(c,sx,sy,3,1,r()<.5?"#3a2a1c":"#7a5e40");
+        else if(k==="dirt")R(c,sx,sy,2,1,r()<.5?"#8a7050":"#d4bc8a");
+        else R(c,sx,sy,1,1,r()<.5?"#8a8a92":"#4a4a52");}
+    }
+    if(k==="mud"){for(var pz=0;pz<10;pz++){var pxx=((r()*MW)|0)*T+2,pyy=(y0+((r()*(y1-y0))|0))*T+4;R(c,pxx,pyy,10,5,"#4a4640");R(c,pxx+1,pyy+1,6,1,"#8a96a0");}}
+    if(k==="snow"){for(var f=0;f<MW*2;f+=3){R(c,f*8+2,(y0+1)*T+5,3,1,"#9aa8c0");R(c,f*8+5,(y0+2)*T+9,3,1,"#9aa8c0");}}
+    if(k==="lined"){var mid=Math.round(((y0+y1)/2+.5)*T);for(var lx=0;lx<MW*T;lx+=22)R(c,lx,mid-1,12,2,"#e8c83a");R(c,0,y0*T+1,MW*T,1,"#e8e8e8");R(c,0,(y1+1)*T-2,MW*T,1,"#e8e8e8");}
+  }
+  function walkFill(a,b){
+    var k=curScene().walk;
+    if(k==="brick"){brick(a,b);if(curScene().key==="bor"){for(var i=0;i<MW*(b-a+1)*2;i++){R(c,((r()*MW)|0)*T+((r()*14)|0),(a+((r()*(b-a+1))|0))*T+((r()*14)|0),3,1,"rgba(255,255,255,.85)");}}return;}
+    for(var yy=a;yy<=b;yy++)for(var xx=0;xx<MW;xx++){
+      var v=(r()*12)|0,col=k==="slate"?"rgb("+(112+v)+","+(116+v)+","+(124+v)+")":k==="dirt"?"rgb("+(160+v)+","+(132+v)+","+(92+v)+")":"rgb("+(196+v)+","+(196+v)+","+(190+v)+")";
+      R(c,xx*T,yy*T,T,T,col);
+      if(k!=="dirt"){R(c,xx*T,yy*T,T,1,"rgba(0,0,0,.16)");R(c,xx*T,yy*T,1,T,"rgba(0,0,0,.16)");}else for(var q=0;q<4;q++)R(c,xx*T+((r()*13)|0),yy*T+((r()*13)|0),2,1,"#8a7050");
+    }
+  }
   function straw(y0,y1){for(var yy=y0;yy<=y1;yy++)for(var xx=0;xx<MW;xx++){var v=(r()*18)|0;R(c,xx*T,yy*T,T,T,"rgb("+(196+v)+","+(168+v)+","+(104+v)+")");
       for(var k2=0;k2<9;k2++){var sx=xx*T+((r()*12)|0),sy=yy*T+((r()*15)|0);R(c,sx,sy,3+((r()*3)|0),1,r()<.55?"#e8d49c":"#8d7243");}}}
   function dirt(x0,y0,w,h){for(var yy=y0;yy<y0+h;yy++)for(var xx=x0;xx<x0+w;xx++){R(c,xx*T,yy*T,T,T,r()<.5?"#bf9f6e":"#b99a68");for(var k=0;k<6;k++)R(c,xx*T+((r()*15)|0),yy*T+((r()*15)|0),1,1,r()<.5?"#d6bb8a":"#9b7e52");}}
-  brick(11,13);straw(14,17);brick(18,19);
+  walkFill(11,13);streetFill(14,17);walkFill(18,19);
   R(c,0,14*T-2,MW*T,2,"#9a9ca2");R(c,0,18*T,MW*T,2,"#9a9ca2");
   dirt(27,20,3,17);dirt(30,28,16,2);dirt(17,29,11,2);
   /* hall floor */
@@ -971,7 +1264,7 @@ function buildGround(){
   function railV(tx,ty){for(var q=0;q<T;q+=8){R(c,tx*T+6,ty*T+q,4,1,"#23232c");}post(tx*T+6,ty*T);post(tx*T+6,ty*T+8);}
   for(tx=3;tx<=16;tx++){railH(tx,24);railH(tx,35);}
   for(ty=25;ty<=34;ty++){railV(3,ty);if(ty<29||ty>30)railV(16,ty);}
-  assemblyRoom(c,r);return g;
+  if(curScene().key==="signing")assemblyRoom(c,r);return g;
 }
 function assemblyRoom(c,r){
   var tx,ty,k;
@@ -997,7 +1290,7 @@ var TREE_CV=[];
 function disk(c,cx,cy,rad,col){for(var y=-rad;y<=rad;y++){var w=Math.floor(Math.sqrt(rad*rad-y*y));c.fillStyle=col;c.fillRect(cx-w,cy+y,w*2+1,1);}}
 function buildTrees(){
   var sets=[["#2f6a2f","#3f8a3c","#58ab50","#82cf72"],["#2a6a40","#3a8a50","#52ab68","#7bd09a"],["#4a6a2a","#628a34","#80ab46","#aacf6a"],["#2f6a2f","#3f8a3c","#58ab50","#82cf72"]];
-  var sk=seasonK();sets=sets.map(function(a,i){return a.map(function(c){return mixHex(c,["#c9902e","#b8662a","#d4b038","#c9902e"][i],sk*.78);});});
+  var sk=seasonK();sets=sets.map(function(a,i){var s0=curScene();return a.map(function(c){return mixHex(c,s0.key==="signing"?["#c9902e","#b8662a","#d4b038","#c9902e"][i]:s0.leaf[1],s0.key==="signing"?sk*.78:Math.min(1,sk));});});
   for(var v=0;v<4;v++){
     var big=v===3,sz=big?68:44,cv=document.createElement("canvas");cv.width=sz;cv.height=sz+(big?4:0);var c=cv.getContext("2d"),p=sets[v],R0=big?26:17,cx=sz/2,cy=R0+2;
     R(c,cx-2,cy+R0-4,4,sz-(cy+R0-4)-2,"#6a4a2c");R(c,cx-2,cy+R0-4,1,sz-(cy+R0-4)-2,"#8a6a44");R(c,cx+1,cy+R0-4,1,sz-(cy+R0-4)-2,"#4a3220");
@@ -1066,12 +1359,20 @@ function buildBuildings(){
   BCV.sh=makeStateHouse();
   BCV.gr=makeHouse(10,6,{roofH:26,roof:"#5a5f78",cols:3,seed:11,lit:0,door:1});
   BCV.tv=makeHouse(11,6,{roofH:24,roof:"#4e6a5c",cols:4,seed:12,lit:1,door:1,sign:1});
+  var sc=curScene();
+  Object.keys(BCV).forEach(function(id){var cb=BCV[id],c2=cb.getContext("2d");c2.globalCompositeOperation="source-atop";
+    if(sc.tint){c2.fillStyle=sc.tint;c2.fillRect(0,0,cb.width,cb.height);}
+    if(sc.key==="bor"){c2.fillStyle="rgba(255,255,255,.92)";c2.fillRect(0,0,cb.width,5);c2.fillStyle="rgba(255,255,255,.55)";c2.fillRect(0,5,cb.width,4);}
+    c2.globalCompositeOperation="source-over";
+    if(sc.key==="early"&&id==="sh"){c2.fillStyle="#7a5a30";for(var sx=14;sx<cb.width-10;sx+=36){c2.fillRect(sx,cb.height-70,2,70);}c2.fillRect(14,cb.height-48,cb.width-28,2);c2.fillRect(14,cb.height-26,cb.width-28,2);}
+  });
 }
 
 /* ============ AUDIO-FREE FX state ============ */
 var cv=$("game"),ctx=cv.getContext("2d");ctx.imageSmoothingEnabled=false;
 var dofC=$("dof").getContext("2d"),bloomC=$("bloom").getContext("2d");
 var particles=[];for(var pi=0;pi<46;pi++)particles.push({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.4)*4,vy:-1-Math.random()*3,ph:Math.random()*6,s:Math.random()<.2?2:1});
+var WXP=[];for(pi=0;pi<90;pi++)WXP.push({x:Math.random()*W,y:Math.random()*H,r:Math.random(),ph:Math.random()*6});
 var leaves=[];for(pi=0;pi<5;pi++)leaves.push({x:Math.random()*W,y:Math.random()*H,vx:6+Math.random()*6,vy:5+Math.random()*4,ph:Math.random()*6});
 
 /* ============ ENTITIES ============ */
@@ -1087,7 +1388,47 @@ var NPCS=[
  {id:"seller",name:"Pamphlet seller",t:[37,19],look:"seller",dir:"d"},
  {id:"franklin",name:"Benjamin Franklin",t:[31,27],look:"franklin",dir:"d"},
  {id:"sentry1",name:"Sentry",t:[25,11],look:"sentry",dir:"d"},
- {id:"sentry2",name:"Sentry",t:[30,11],look:"sentry",dir:"d"}
+ {id:"sentry2",name:"Sentry",t:[30,11],look:"sentry",dir:"d"},
+ {id:"madison91",name:"James Madison",t:[22,13],look:"madison91",dir:"d"},
+ {id:"warren",name:"Mercy Otis Warren",t:[28,15],look:"warren",dir:"d"},
+ {id:"mason91",name:"George Mason",t:[34,13],look:"mason91",dir:"d"},
+ {id:"c1a",name:"Printer's apprentice",t:[20,17],look:"printer",dir:"d"},
+ {id:"c1b",name:"Militiaman",t:[26,18],look:"militiaman",dir:"d"},
+ {id:"c1c",name:"Market woman",t:[33,17],look:"shawlwoman",dir:"d"},
+ {id:"marshall",name:"John Marshall",t:[22,13],look:"marshall",dir:"d"},
+ {id:"jefferson",name:"Thomas Jefferson",t:[30,15],look:"jefferson",dir:"d"},
+ {id:"c2a",name:"Stonemason",t:[20,17],look:"mason_worker",dir:"d"},
+ {id:"c2b",name:"Surveyor",t:[26,18],look:"surveyor",dir:"d"},
+ {id:"c2c",name:"Wagon driver",t:[36,17],look:"mason_worker",dir:"d"},
+ {id:"douglass65",name:"Frederick Douglass",t:[22,13],look:"douglass",dir:"d"},
+ {id:"stevens",name:"Thaddeus Stevens",t:[28,15],look:"stevens",dir:"d"},
+ {id:"revels",name:"Hiram Revels",t:[34,13],look:"revels",dir:"d"},
+ {id:"c3a",name:"Union soldier",t:[20,17],look:"soldier",dir:"d"},
+ {id:"c3b",name:"Freedman",t:[26,18],look:"freedman",dir:"d"},
+ {id:"c3c",name:"Freedwoman",t:[33,17],look:"freedwoman",dir:"d"},
+ {id:"lafollette",name:"Robert La Follette",t:[22,13],look:"lafollette",dir:"d"},
+ {id:"wheeler",name:"Wayne B. Wheeler",t:[28,15],look:"wheeler",dir:"d"},
+ {id:"paul",name:"Alice Paul",t:[34,13],look:"paul",dir:"d"},
+ {id:"c4a",name:"Suffragist",t:[20,17],look:"suffragist",dir:"d"},
+ {id:"c4b",name:"Newsboy",t:[26,18],look:"newsboy",dir:"d"},
+ {id:"c4c",name:"Motorist",t:[37,17],look:"wheeler2",dir:"d"},
+ {id:"fdr",name:"Franklin D. Roosevelt",t:[22,13],look:"fdr",dir:"d"},
+ {id:"sabin",name:"Pauline Sabin",t:[28,15],look:"sabin",dir:"d"},
+ {id:"truman",name:"Harry Truman",t:[34,13],look:"truman",dir:"d"},
+ {id:"c5a",name:"Man in the breadline",t:[20,17],look:"breadline",dir:"d"},
+ {id:"c5b",name:"Woman in the breadline",t:[21,18],look:"breadline2",dir:"d"},
+ {id:"c5c",name:"Radio listener",t:[36,17],look:"breadline",dir:"d"},
+ {id:"king",name:"Martin Luther King Jr.",t:[22,13],look:"king",dir:"d"},
+ {id:"bayh",name:"Birch Bayh",t:[30,15],look:"bayh",dir:"d"},
+ {id:"c6a",name:"Marcher",t:[20,17],look:"marcher",dir:"d"},
+ {id:"c6b",name:"Reporter",t:[26,18],look:"reporter",dir:"d"},
+ {id:"c6c",name:"Young voter",t:[36,17],look:"student1",dir:"d"},
+ {id:"watson",name:"Gregory Watson",t:[24,13],look:"watson",dir:"d"},
+ {id:"c7a",name:"Student",t:[20,17],look:"student1",dir:"d"},
+ {id:"c7b",name:"Student",t:[28,18],look:"student2",dir:"d"},
+ {id:"c7c",name:"Professor",t:[34,15],look:"professor",dir:"d"},
+ {id:"c8a",name:"Visitor",t:[22,15],look:"student2",dir:"d"},
+ {id:"c8b",name:"Teacher",t:[30,15],look:"professor",dir:"d"}
 ];
 GHOSTS.forEach(function(g){NPCS.push({id:g.id,name:g.name,t:g.at,look:g.look,dir:"d",ghost:1});});
 NPCS.forEach(function(n){n.x=n.t[0]*T+8;n.y=n.t[1]*T+14;n.ph=Math.random()*6;});
@@ -1095,7 +1436,7 @@ var WANDER=[{look:"w1",x:18*T,y:16*T,vx:0,vy:0,t:0,dir:"d"},{look:"w2",x:40*T,y:
 var player={x:S.x,y:S.y,dir:S.dir||"d",moving:false,anim:0};
 
 function npcAvailable(n){
-  return ENC.some(function(e){return e.npc===n.id&&!S.enc[e.id]&&(e.side?S.ch>=e.ch:S.ch===e.ch);});
+  return ENC.some(function(e){return e.npc===n.id&&!S.enc[e.id]&&(e.side?S.ch>=e.ch:S.ch===e.ch)&&(!e.req||S.enc[e.req]);});
 }
 
 /* ============ INPUT ============ */
@@ -1128,7 +1469,7 @@ function blockedAt(px,py){
   var l=px-4,r=px+4,t=py-4,b=py;
   var pts=[[l,t],[r,t],[l,b],[r,b]];
   for(var i=0;i<4;i++){if(solidAt(Math.floor(pts[i][0]/T),Math.floor(pts[i][1]/T)))return true;}
-  for(var j=0;j<NPCS.length;j++){var n=NPCS[j];if(px+4>n.x-5&&px-4<n.x+5&&py>n.y-4&&py-4<n.y)return true;}
+  for(var j=0;j<NPCS.length;j++){var n=NPCS[j];if(!npcHere(n))continue;if(px+4>n.x-5&&px-4<n.x+5&&py>n.y-4&&py-4<n.y)return true;}
   return false;
 }
 function update(dt){
@@ -1157,7 +1498,7 @@ function update(dt){
 function nearest(){
   var best=null,bd=1e9,fx=player.x+(player.dir==="r"?6:player.dir==="l"?-6:0),fy=player.y+(player.dir==="d"?6:player.dir==="u"?-6:0);
   function test(o,x,y,r,kind){var d=Math.hypot(x-fx,y-fy);if(d<r&&d<bd){bd=d;best={o:o,kind:kind};}}
-  NPCS.forEach(function(n){test(n,n.x,n.y-4,22,"npc");});
+  NPCS.forEach(function(n){if(!npcHere(n))return;test(n,n.x,n.y-4,22,"npc");});
   PROPS.forEach(function(p){if(p.k==="ped")test(p,p.x,p.y-4,22,"ped");if(p.k==="monument")test(p,p.x,p.y+10,24,"mon");});
   if(!gateOpen())test({},16*T+8,29*T+16,26,"gate");
   return best;
@@ -1166,18 +1507,18 @@ function interact(){
   var t=nearest();if(!t)return;
   if(t.kind==="npc"){faceTo(t.o);npcTalk(t.o);}
   else if(t.kind==="ped")pedTalk(t.o);
-  else if(t.kind==="gate")openDlg([N("A faint light flickers behind the iron gate, but the garden is sealed. It will open once the Constitution is signed and the argument over ratification has begun.")]);
+  else if(t.kind==="gate")openDlg([N("A faint light flickers behind the iron gate, but the Hall is sealed. It will open once you have followed the Constitution through every era.")]);
   else if(t.kind==="mon")monTalk();
 }
 function faceTo(n){var dx=n.x-player.x,dy=n.y-player.y;n.dir=Math.abs(dx)>Math.abs(dy)?(dx>0?"l":"r"):(dy>0?"u":"d");}
 function npcTalk(n){
-  var e=ENC.filter(function(x){return x.npc===n.id&&!S.enc[x.id]&&(x.side?S.ch>=x.ch:S.ch===x.ch);})[0];
+  var e=ENC.filter(function(x){return x.npc===n.id&&!S.enc[x.id]&&(x.side?S.ch>=x.ch:S.ch===x.ch)&&(!x.req||S.enc[x.req]);})[0];
   if(e)return startEnc(e);
   var later=ENC.filter(function(x){return x.npc===n.id&&!S.enc[x.id];})[0];
   if(later)return openDlg([N(n.name+" is occupied for now. Check the objective in the corner of the screen.")]);
   openDlg([N(IDLE[n.id]||"They nod to you.")]);
 }
-function startEnc(e){openDlg(e.beats(),function(){S.enc[e.id]=1;if(e.after)e.after();updateGate();save();refreshHud();});}
+function startEnc(e){openDlg(e.beats(),function(){S.enc[e.id]=1;if(e.after)e.after();updateGate();save();refreshHud();checkScene();});}
 /* ============ ARTICLES, SCROLLS, AND THE MONUMENT ============ */
 var PEDART={p1:1,p2:2,p3:3,p4:4,p5:5,p6:6,p7:7,g_assent:1,g_judges:2,g_armies:3,g_quarter:4,g_tax:5,g_jury:6,g_beyond:7};
 function readingDone(){return S.ch>5||!!(S.enc&&S.enc.reading);}
@@ -1206,12 +1547,12 @@ function pedTalk(p){
   });
 }
 function monTalk(){
-  if(S.ch<11)return openDlg([N("A pale monument stands at the center of the Hall, its face blank. It will fill with words once the visitors here have been heard.")]);
+  if(S.ch<EPI)return openDlg([N("A pale monument stands at the center of the Hall, its face blank. It will fill with words once you have followed the Constitution through every era.")]);
   if(S.enc.refl)return openDlg([N("The monument glows softly. Your reflection is saved in your satchel.")]);
   openDlg([
-   N("Words rise on the monument as you read them, in the voices you have heard: Madison and Mason, Washington and Franklin, Warren, Marshall, Douglass, Paul, Roosevelt, and King. It has a question for you about the legal lens."),
+   N("Words rise on the monument as you read them, in the voices you have heard across two centuries: Washington and Franklin, Madison and Mason, Warren, Marshall, Douglass, Paul, Roosevelt, and King. It has a question for you about the legal lens."),
    NT("refl",{title:"The legal-lens reflection",min:100,pts:100,bank:1,prompt:{intro:"In one or two paragraphs, explain how the Constitution’s own design made the amendments possible, and what the amendments show about how American law changes. Use at least one quote, and answer both questions below.",items:["Which features of the original Constitution (the Article V amendment process, separation of powers, federalism, or judicial review) shaped how the amendments came about?","Choose two amendments from different eras. For each, what problem, court decision, or movement led to it, and who gained or lost protection as a result?"],tip:"Tip: tap a quote in the bank to insert it, or press Esc to look back through your satchel while you write."},store:function(t){S.refl=t;}})
-  ],function(){S.enc.refl=1;S.ch=12;S.done=true;S.completedOn=new Date().toISOString();save();refreshHud();openFinale();});
+  ],function(){S.enc.refl=1;S.ch=EPI+1;S.done=true;S.completedOn=new Date().toISOString();save();refreshHud();openFinale();});
 }
 
 /* ============ DIALOG ENGINE ============ */
@@ -1468,7 +1809,6 @@ function noteBeat(b){
 /* ============ HUD / MENU ============ */
 function objective(){
   var c=S.ch;
-  var echoN=GHOSTS.filter(function(g){return S.enc["gh_"+g.id];}).length;
   var m=[
    "Speak with James Madison on the State House steps.",
    "Go through the State House doors and find George Washington on the dais of the Assembly Room.",
@@ -1478,16 +1818,20 @@ function objective(){
    readingDone()?"At the scrolls on the pedestals in the yard to the south, summarize each Article ("+artCount()+"/7).":"Hear the finished draft read aloud: speak with Gouverneur Morris in the Assembly Room.",
    "Sit with Benjamin Franklin under the big tree in the yard.",
    "Find George Mason in the Assembly Room.",
-   "Visit the pamphlet seller’s stall on the lower sidewalk.",
-   "Speak with James Madison again on the State House steps.",
-   "Enter the Hall of Echoes in the south-west yard and hear each guide ("+echoN+"/8, "+amCount()+"/27 amendments).",
-   "Read the monument at the center of the Hall.",
-   "Your case file is complete. Explore, revisit scrolls, or open your satchel to copy it."
+   "Visit the pamphlet seller’s stall on the lower sidewalk."
   ];
-  return m[c]||m[12];
+  if(c<=8)return m[c];
+  if(c>=9&&c<EPI){
+    var k=sceneOf(c),g=GUIDES.filter(function(x){return x.scene===k&&!S.enc["gd_"+x.id];})[0];
+    if(!g)return "Continue.";
+    var rng=g.ams.length>1?"Amendments "+ROMAN[g.ams[0]]+" to "+ROMAN[g.ams[g.ams.length-1]]:"Amendment "+ROMAN[g.ams[0]];
+    return SCENES[k].part+": find "+g.name+" and hear how "+rng+" came about ("+amCount()+" of 27 amendments analyzed).";
+  }
+  if(c===EPI)return "Enter the Hall of Echoes in the south-west yard and read the monument.";
+  return "Your case file is complete. Explore, revisit scrolls, or open your satchel to copy it.";
 }
 function refreshHud(){
-  if(typeof seasonRefresh==="function")seasonRefresh();$("objT").textContent=objective();$("pts").textContent=S.pts+" points";$("bc").textContent=Object.keys(S.cards).length+"/"+TOTAL;
+  if(typeof seasonRefresh==="function")seasonRefresh();setEraTag();$("objT").textContent=objective();$("pts").textContent=S.pts+" points";$("bc").textContent=Object.keys(S.cards).length+"/"+TOTAL;
 }
 function draftItems(){
   var out=[];
@@ -1700,10 +2044,30 @@ function silhouette(cvs){var s=SIL.get(cvs);if(s)return s;s=document.createEleme
 /* project an upright image onto the ground, away from the sun (up-left of the scene) */
 function castImage(cvs,bx,by,ox,oy,k){ctx.save();ctx.translate(bx,by);ctx.transform(1,0,-SHX*(k||1),-SHY*(k||1),0,0);ctx.globalAlpha=SHA;ctx.drawImage(silhouette(cvs),ox,oy);ctx.restore();}
 function castBox(bx,by,w,h,k){ctx.save();ctx.translate(bx,by);ctx.transform(1,0,-SHX*(k||1),-SHY*(k||1),0,0);ctx.globalAlpha=SHA;ctx.fillStyle="#0a0e22";ctx.fillRect(-w/2,-h,w,h);ctx.restore();}
+var SPROPS=[],SPS=[],facadeOn=false;
+var PROP_SH2={car:[26,10],tent:[22,10],cart:[18,8],shack:[20,12],scaffold:[26,16],tv:[14,6],rack:[20,5],brazier:[10,5]};
+function ell(x,y,rx,ry,col){ctx.fillStyle=col;ctx.beginPath();ctx.ellipse(x,y,rx,ry,0,0,6.3);ctx.fill();}
+var PROP2={
+ snowdrift:function(p){ell(p.x,p.y-1,13,5,"#c4d0e4");ell(p.x-1,p.y-3,11,5,"#f4f8ff");ell(p.x+3,p.y-5,6,3,"#ffffff");},
+ brazier:function(p){var x=p.x,y=p.y,f=Math.sin(time*9+x)>0?1:0;R(ctx,x-5,y-5,1,5,"#2a2a30");R(ctx,x+4,y-5,1,5,"#2a2a30");R(ctx,x-6,y-9,12,4,"#3a3a42");R(ctx,x-5,y-9,10,1,"#5a5a64");R(ctx,x-3,y-12-f,6,4,"#ff9a2a");R(ctx,x-2,y-15-f,4,4,"#ffd24a");R(ctx,x-1,y-17-f,2,2,"#fff3b0");},
+ scaffold:function(p){var x=p.x,y=p.y;R(ctx,x-12,y-40,2,40,"#7a5a30");R(ctx,x+10,y-40,2,40,"#7a5a30");R(ctx,x-12,y-30,24,2,"#8c6a46");R(ctx,x-12,y-18,24,2,"#8c6a46");R(ctx,x-12,y-8,24,2,"#8c6a46");R(ctx,x-10,y-28,20,1,"#5a4020");},
+ bricks:function(p){var x=p.x,y=p.y;for(var i=0;i<3;i++)for(var j=0;j<4-i;j++){R(ctx,x-8+j*5+i*2,y-4-i*4,5,3,"#a84a32");R(ctx,x-8+j*5+i*2,y-4-i*4,5,1,"#c8644a");}},
+ cart:function(p){var x=p.x,y=p.y;R(ctx,x-14,y-12,28,6,"#8a6a40");R(ctx,x-14,y-12,28,1,"#a88a5c");R(ctx,x-12,y-16,24,4,"#d8c070");disk(ctx,x-8,y-4,4,"#4a3220");disk(ctx,x+8,y-4,4,"#4a3220");disk(ctx,x-8,y-4,1,"#c8a060");disk(ctx,x+8,y-4,1,"#c8a060");},
+ tent:function(p){var x=p.x,y=p.y;ctx.fillStyle="#d8d2c0";ctx.beginPath();ctx.moveTo(x-14,y);ctx.lineTo(x,y-16);ctx.lineTo(x+14,y);ctx.fill();ctx.fillStyle="#a8a290";ctx.beginPath();ctx.moveTo(x,y-16);ctx.lineTo(x+14,y);ctx.lineTo(x+4,y);ctx.fill();ctx.fillStyle="#3a3228";ctx.beginPath();ctx.moveTo(x-4,y);ctx.lineTo(x,y-8);ctx.lineTo(x+3,y);ctx.fill();},
+ flag:function(p){var x=p.x,y=p.y;R(ctx,x-1,y-44,2,44,"#8a8a90");var w=Math.round(Math.sin(time*2+x)*1);for(var i=0;i<7;i++)R(ctx,x+1,y-44+i*2,22+w,2,i%2?"#f4f4f4":"#b02a2a");R(ctx,x+1,y-44,9,8,"#2a3a7a");for(var s=0;s<6;s++)R(ctx,x+2+(s%3)*3,y-43+((s/3)|0)*3,1,1,"#f4f4f4");},
+ sign:function(p){var x=p.x,y=p.y;R(ctx,x-1,y-22,2,22,"#4a3220");R(ctx,x-10,y-32,20,12,p.c||"#f0f0f0");R(ctx,x-10,y-32,20,1,"#222");R(ctx,x-10,y-21,20,1,"#222");R(ctx,x-10,y-32,1,12,"#222");R(ctx,x+9,y-32,1,12,"#222");R(ctx,x-7,y-28,14,1,"#222");R(ctx,x-7,y-25,10,1,"#222");},
+ car:function(p){var x=p.x,y=p.y,c=p.c||"#444";R(ctx,x-13,y-9,26,6,c);R(ctx,x-13,y-9,26,1,"rgba(255,255,255,.35)");R(ctx,x-7,y-14,14,5,c);R(ctx,x-5,y-13,10,3,"#9ab8d0");R(ctx,x-1,y-13,1,3,c);disk(ctx,x-8,y-3,3,"#1a1a1e");disk(ctx,x+8,y-3,3,"#1a1a1e");disk(ctx,x-8,y-3,1,"#8a8a90");disk(ctx,x+8,y-3,1,"#8a8a90");R(ctx,x+12,y-7,2,2,"#f0e8a0");},
+ pole:function(p){var x=p.x,y=p.y;R(ctx,x-1,y-46,3,46,"#5a4028");R(ctx,x-9,y-42,18,2,"#5a4028");R(ctx,x-8,y-44,2,2,"#7ab0a0");R(ctx,x+6,y-44,2,2,"#7ab0a0");R(ctx,x-5,y-34,10,1,"#5a4028");},
+ banner:function(p){var x=p.x,y=p.y;R(ctx,x-1,y-40,2,40,"#8a8a90");R(ctx,x+1,y-38,12,26,p.c||"#7a4aa0");R(ctx,x+1,y-38,12,2,"rgba(255,255,255,.4)");R(ctx,x+3,y-30,8,1,"#f4f0e0");R(ctx,x+3,y-26,8,1,"#f4f0e0");},
+ shack:function(p){var x=p.x,y=p.y;R(ctx,x-10,y-14,20,12,"#8a6a44");R(ctx,x-10,y-14,20,1,"#a88a5c");R(ctx,x-12,y-17,24,4,"#7a7a80");R(ctx,x-12,y-17,24,1,"#a0a0a8");R(ctx,x-2,y-8,5,6,"#3a2a1c");R(ctx,x+5,y-11,4,4,"#2a2a30");},
+ tv:function(p){var x=p.x,y=p.y,f=Math.sin(time*7)>0;R(ctx,x-8,y-7,16,3,"#6a4a2c");R(ctx,x-7,y-4,2,4,"#4a3220");R(ctx,x+5,y-4,2,4,"#4a3220");R(ctx,x-6,y-18,12,11,"#4a3a2a");R(ctx,x-4,y-16,8,7,f?"#bcd4e8":"#8aa8c0");R(ctx,x-1,y-21,1,3,"#222");R(ctx,x+2,y-21,1,3,"#222");},
+ rack:function(p){var x=p.x,y=p.y;R(ctx,x-10,y-3,20,2,"#6a6a72");for(var i=0;i<4;i++){R(ctx,x-9+i*6,y-9,1,6,"#6a6a72");R(ctx,x-9+i*6,y-9,4,1,"#6a6a72");}R(ctx,x-7,y-12,1,9,"#c83a3a");R(ctx,x+3,y-12,1,9,"#3a6ac8");}
+};
 var PROP_SH={bench:[16,10],barrel:[8,10],crate:[12,11],stall:[46,30],ped:[12,15],monument:[16,38],hitch:[24,10]};
 function lights(){
-  var L=[{x:24*T,y:6*T,r:64,c:"255,205,130",a:.5},{x:31*T,y:6*T,r:64,c:"255,205,130",a:.5},{x:27*T+8,y:4*T,r:60,c:"255,220,150",a:.35}];
-  var tn=Math.min(1,S.ch/10);LAMPS.forEach(function(l){L.push({x:l.x,y:l.y-12,r:70+20*tn,c:"255,196,110",a:(.30+.70*tn)*(.96+.04*Math.sin(time*3+l.x)),lamp:1});});
+  var L=curScene().key==="signing"?[{x:24*T,y:6*T,r:64,c:"255,205,130",a:.5},{x:31*T,y:6*T,r:64,c:"255,205,130",a:.5},{x:27*T+8,y:4*T,r:60,c:"255,220,150",a:.35}]:[];
+  curScene().props.forEach(function(p){if(p.k==="brazier")L.push({x:p.tx*T+8,y:p.ty*T,r:46,c:"255,170,80",a:.75});});
+  var tn=sceneT();LAMPS.forEach(function(l){L.push({x:l.x,y:l.y-12,r:70+20*tn,c:"255,196,110",a:(.30+.70*tn)*(.96+.04*Math.sin(time*3+l.x)),lamp:1});});
   PROPS.forEach(function(p){if(p.k==="ped"){var done=pedDone(p.g);if(S.ch>=5&&readingDone())L.push({x:p.x,y:p.y-12,r:20,c:done?"140,230,170":"255,225,130",a:.2+.07*Math.sin(time*3+p.x)});}
     if(p.k==="monument"&&gateOpen())L.push({x:p.x,y:p.y-14,r:S.ch>=11?70:40,c:"160,200,255",a:.4+.12*Math.sin(time*2)});});
   NPCS.forEach(function(n){if(n.ghost&&gateOpen())L.push({x:n.x,y:n.y-12,r:30,c:"150,200,255",a:.4+.1*Math.sin(time*2+n.ph)});});
@@ -1716,26 +2080,26 @@ function render(){
   ctx.drawImage(ground,camX,camY,W,H,0,0,W,H);
   ctx.save();ctx.translate(-camX,-camY);
   /* the sun sinks as the story goes on, so shadows lengthen and deepen */
-  var sun=Math.min(1,S.ch/10);SHX=.5+.5*sun;SHY=.28+.12*sun;SHA=.44+.12*sun;
+  var sun=sceneT();SHX=.5+.5*sun;SHY=.28+.12*sun;SHA=.44+.12*sun;
   BLD.forEach(function(b){var im=BCV[b.id];castImage(im,b.x*T,(b.y+b.h)*T,0,-im.height);});
   var items=[];
   BLD.forEach(function(b){items.push({y:(b.y+b.h)*T,d:function(){ctx.drawImage(BCV[b.id],b.x*T,b.y*T);}});});
   TREES.forEach(function(t){items.push({y:t.y,d:function(){var cvv=TREE_CV[t.v],sway=REDUCED?0:Math.round(Math.sin(time*1.2+t.x*.1)*.6);castImage(cvv,t.x,t.y,-cvv.width/2,-(cvv.height-2),.9);ctx.fillStyle="rgba(10,20,10,.3)";ctx.beginPath();ctx.ellipse(t.x+2,t.y,t.big?18:11,t.big?5:3.4,0,0,6.3);ctx.fill();ctx.drawImage(cvv,pxr(t.x-cvv.width/2+sway),pxr(t.y-cvv.height+2));}});});
   LAMPS.forEach(function(l){items.push({y:l.y,d:function(){ctx.save();ctx.translate(l.x,l.y);ctx.transform(1,0,-SHX,-SHY,0,0);ctx.globalAlpha=SHA;ctx.fillStyle="#0a0e22";ctx.fillRect(-1,-22,2,22);ctx.fillRect(-4,-30,8,8);ctx.restore();R(ctx,l.x-3,l.y-2,6,2,"#2b2a33");R(ctx,l.x-1,l.y-22,2,21,"#2b2a33");R(ctx,l.x-4,l.y-29,8,7,"#23232c");R(ctx,l.x-3,l.y-28,6,5,"#f6d27a");R(ctx,l.x-4,l.y-30,8,2,"#23232c");}});});
-  PROPS.forEach(function(p){items.push({y:p.y,d:function(){var sh=PROP_SH[p.k];if(sh)castBox(p.x,p.y,sh[0],sh[1]);drawProp(p);}});});
-  NPCS.forEach(function(n){items.push({y:n.y,d:function(){var bob=n.ghost?Math.round(Math.sin(time*2+n.ph)*2)-3:(Math.sin(time*1.6+n.ph)>.85?-1:0);if(n.ghost&&!gateOpen())return;drawSprite(n.look,n.dir,0,n.x,n.y,n.ghost,bob);}});});
+  PROPS.concat(SPROPS).forEach(function(p){items.push({y:p.y,d:function(){var sh=PROP_SH[p.k]||PROP_SH2[p.k];if(sh)castBox(p.x,p.y,sh[0],sh[1]);drawProp(p);}});});
+  NPCS.forEach(function(n){items.push({y:n.y,d:function(){if(!npcHere(n))return;var bob=n.ghost?Math.round(Math.sin(time*2+n.ph)*2)-3:(Math.sin(time*1.6+n.ph)>.85?-1:0);if(n.ghost&&!gateOpen())return;drawSprite(n.look,n.dir,0,n.x,n.y,n.ghost,bob);}});});
   WANDER.forEach(function(w){items.push({y:w.y,d:function(){drawSprite(w.look,w.dir,(w.vx||w.vy)?[0,1,0,2][Math.floor(w.anim)%4]:0,w.x,w.y);}});});
   items.push({y:player.y,d:function(){drawSprite("player",player.dir,player.moving?[0,1,0,2][Math.floor(player.anim)%4]:0,player.x,player.y);}});
   items.sort(function(a,b){return a.y-b.y;});
   items.forEach(function(it){it.d();});
   /* quest markers */
-  NPCS.forEach(function(n){if(npcAvailable(n)){var yy=n.y-(34+(n.look==="jefferson"?3:0)|0)+Math.round(Math.sin(time*4)*1.5);diamond(n.x,yy);}});
-  PROPS.forEach(function(p){if(p.k==="ped"&&S.ch>=5&&readingDone()&&!(pedDone(p.g)))diamond(p.x,p.y-24+Math.round(Math.sin(time*4+p.x)*1.5));if(p.k==="monument"&&S.ch===11)diamond(p.x,p.y-42+Math.round(Math.sin(time*4)*1.5));});
+  NPCS.forEach(function(n){if(npcHere(n)&&npcAvailable(n)){var yy=n.y-(34+(n.look==="jefferson"?3:0)|0)+Math.round(Math.sin(time*4)*1.5);diamond(n.x,yy);}});
+  PROPS.forEach(function(p){if(p.k==="ped"&&S.ch>=5&&readingDone()&&!(pedDone(p.g)))diamond(p.x,p.y-24+Math.round(Math.sin(time*4+p.x)*1.5));if(p.k==="monument"&&S.ch===EPI)diamond(p.x,p.y-42+Math.round(Math.sin(time*4)*1.5));});
   /* open/closed gate */
   drawGate();
   ctx.restore();
   /* lighting: ambient light that falls from daylight to blue dusk, with lamps and glows as pools of warm light */
-  var tn2=Math.min(1,S.ch/10),ar=Math.round(255-127*tn2),ag=Math.round(243-115*tn2),ab=Math.round(214-46*tn2);
+  var tn2=sceneT(),A2=curScene().amb2,ar=Math.round(A2[0][0]+(A2[1][0]-A2[0][0])*tn2),ag=Math.round(A2[0][1]+(A2[1][1]-A2[0][1])*tn2),ab=Math.round(A2[0][2]+(A2[1][2]-A2[0][2])*tn2);
   lx.globalCompositeOperation="source-over";lx.fillStyle="rgb("+ar+","+ag+","+ab+")";lx.fillRect(0,0,W,H);
   var LT=lights();
   lx.globalCompositeOperation="lighter";
@@ -1747,13 +2111,24 @@ function render(){
   LT.forEach(function(l){if(!l.lamp)return;var sx=l.x-camX,sy=l.y-camY;if(sx<-90||sx>W+90||sy<-90||sy>H+90)return;
     var g=ctx.createRadialGradient(sx,sy+10,0,sx,sy+10,l.r*.6);g.addColorStop(0,"rgba(255,170,80,"+(.16*tn2).toFixed(3)+")");g.addColorStop(1,"rgba(255,170,80,0)");ctx.fillStyle=g;ctx.fillRect(sx-l.r,sy-l.r,l.r*2,l.r*2);});
   ctx.globalCompositeOperation="source-over";
-  leaves.forEach(function(l){if(!REDUCED){l.x+=l.vx*.016;l.y+=l.vy*.016;l.ph+=.05;}if(l.y>H+4||l.x>W+4){l.x=-4-Math.random()*40;l.y=Math.random()*H*.6;}
-    ctx.fillStyle=(l.ph*3|0)%2?"#6d8f33":"#9d742f";ctx.fillRect(pxr(l.x),pxr(l.y+Math.sin(l.ph)*2),2,1);});
+  drawWeather();
   dofC.drawImage(cv,0,0);bloomC.drawImage(cv,0,0);
+}
+function drawWeather(){
+  var wx=curScene().weather;if(wx==="none")return;
+  if(wx==="leaf"){leaves.forEach(function(l){if(!REDUCED){l.x+=l.vx*.016;l.y+=l.vy*.016;l.ph+=.05;}if(l.y>H+4||l.x>W+4){l.x=-4-Math.random()*40;l.y=Math.random()*H*.6;}
+    ctx.fillStyle=(l.ph*3|0)%2?"#6d8f33":"#9d742f";ctx.fillRect(pxr(l.x),pxr(l.y+Math.sin(l.ph)*2),2,1);});return;}
+  var n=wx==="snow"?90:wx==="ash"?46:40;
+  for(var i=0;i<n;i++){var p=WXP[i];
+    if(wx==="snow"){if(!REDUCED){p.y+=(14+p.r*18)*.016;p.x+=Math.sin(time*.8+p.ph)*.12+.05;}if(p.y>H+2){p.y=-2;p.x=Math.random()*W;}ctx.fillStyle="rgba(255,255,255,"+(.55+p.r*.4)+")";ctx.fillRect(pxr(p.x),pxr(p.y),p.r>.7?2:1,p.r>.7?2:1);}
+    else if(wx==="ash"){if(!REDUCED){p.y-=(2+p.r*5)*.016;p.x+=(3+p.r*6)*.016;}if(p.y<-2||p.x>W+2){p.y=H+2;p.x=Math.random()*W;}ctx.fillStyle="rgba(70,66,62,"+(.4+p.r*.4)+")";ctx.fillRect(pxr(p.x),pxr(p.y),p.r>.8?2:1,1);}
+    else{if(!REDUCED){p.x+=(38+p.r*30)*.016;p.y+=Math.sin(time+p.ph)*.1;}if(p.x>W+2){p.x=-2;p.y=Math.random()*H;}ctx.fillStyle="rgba(200,170,120,"+(.25+p.r*.3)+")";ctx.fillRect(pxr(p.x),pxr(p.y),3,1);}
+  }
 }
 function diamond(x,y){var c=ctx;x=pxr(x);y=pxr(y);R(c,x-1,y-3,2,1,"#fff3b0");R(c,x-2,y-2,4,1,"#f0cc72");R(c,x-3,y-1,6,2,"#f0cc72");R(c,x-2,y+1,4,1,"#c99a3a");R(c,x-1,y+2,2,1,"#a77a28");R(c,x-3,y-1,6,1,"#fff3b0");}
 function drawProp(p){
   var x=p.x,y=p.y,c=ctx;
+  if(PROP2[p.k]){PROP2[p.k](p);return;}
   c.fillStyle="rgba(10,20,10,.28)";
   if(p.k==="bench"){c.beginPath();c.ellipse(x,y-1,10,3,0,0,6.3);c.fill();R(c,x-8,y-6,16,3,"#7a5a3a");R(c,x-8,y-11,16,3,"#8c6a46");R(c,x-8,y-11,16,1,"#a98660");R(c,x-7,y-3,2,3,"#3a2a20");R(c,x+5,y-3,2,3,"#3a2a20");R(c,x-8,y-8,2,2,"#3a2a20");R(c,x+6,y-8,2,2,"#3a2a20");}
   else if(p.k==="barrel"){c.beginPath();c.ellipse(x,y-1,6,2.4,0,0,6.3);c.fill();R(c,x-4,y-10,8,10,"#8a5a30");R(c,x-5,y-8,10,6,"#8a5a30");R(c,x-4,y-10,8,1,"#b07a44");R(c,x-5,y-7,10,1,"#3a2a20");R(c,x-5,y-3,10,1,"#3a2a20");}
@@ -1790,6 +2165,16 @@ function fit(){var w=$("stage").clientWidth,s=w/W;document.documentElement.style
 window.addEventListener("resize",fit);
 
 /* ============ BOOT ============ */
+function applyScene(k,first){
+  var sc=SCENES[k];
+  if(k>=1&&!facadeOn){facadeOn=true;for(var yy=2;yy<=10;yy++)for(var xx=18;xx<=37;xx++)grid[yy*MW+xx]=0;setSolid(0,0,MW,5);BLD.push({id:"sh",x:18,y:2,w:20,h:9});setSolid(18,2,20,9);}
+  SPS.forEach(function(q){for(var i=0;i<q[2];i++)grid[q[1]*MW+q[0]+i]=0;});SPS=[];SPROPS.length=0;
+  sc.props.forEach(function(p){var w=(p.k==="car"||p.k==="tent"||p.k==="cart")?2:1;SPROPS.push({k:p.k,x:p.tx*T+8*w,y:p.ty*T+14,c:p.c,n:p.n});setSolid(p.tx,p.ty,w,1);SPS.push([p.tx,p.ty,w]);});
+  TREE_CV.length=0;buildTrees();buildBuildings();ground=buildGround();updateGate();
+  cv.style.filter="saturate(.86) contrast(1.12) "+sc.filter;
+  if(!first){player.x=28*T+8;player.y=15*T+8;player.dir="d";keys.u=keys.d=keys.l=keys.r=false;}
+  setEraTag();
+}
 function begin(){
   var v=$("nm").value.trim();if(!v){$("nm").focus();return;}
   S.name=v;if(!S.started){S.started=true;}
@@ -1797,7 +2182,7 @@ function begin(){
   if(!S.seen_intro){S.seen_intro=true;save();
     openDlg([
       N("Philadelphia, May 1787. Delegates from the states are gathering in the Pennsylvania State House, the same building where the Declaration was adopted. The country is independent, but its government is failing, and the delegates have come to fix it."),
-      N("You are the young clerk who carried papers for the Committee of Five in 1776, eleven years older now and back in Philadelphia to assist the delegates. Walk the city, hear the debates, summarize each Article of the new Constitution, and then travel forward through the amendments with the echoes in the Hall. The quotes you read are real. The map is stylized and the narration is the game’s own."),
+      N("You are the young clerk who carried papers for the Committee of Five in 1776, eleven years older now and back in Philadelphia to assist the delegates. Walk the city, hear the debates, summarize each Article of the new Constitution, and then travel forward through time, era by era, as the amendments are added. The quotes you read are real. The map is stylized and the narration is the game’s own."),
       N("Walk with the arrow keys or WASD, and hold Shift to sprint. Press E, Z, Enter, or Space near a person or scroll to talk. Press Esc to open your satchel, with your draft, your cards, and your notes. Golden diamonds mark who to talk to next.")]);
   }
 }
@@ -1805,7 +2190,7 @@ $("begin").addEventListener("click",begin);
 $("nm").addEventListener("keydown",function(e){if(e.key==="Enter")begin();});
 $("reset").addEventListener("click",function(){S=fresh();save();location.reload();});
 if(S.started){$("nm").value=S.name;$("begin").textContent="Continue";$("reset").hidden=false;}
-buildTrees();buildBuildings();ground=buildGround();updateGate();refreshHud();fit();
+applyScene(sceneOf(S.ch),true);updateGate();refreshHud();fit();
 player.x=S.x;player.y=S.y;player.dir=S.dir||"d";
 requestAnimationFrame(frame);
 })();
