@@ -1,6 +1,6 @@
 # The Constitution: Constitutional Analysis
 
-Students **choose one** of three ways to complete the Constitutional Analysis assignment. All three ask for the same thinking, and students turn in one file on Google Classroom.
+Students **choose one** of four ways to complete the Constitutional Analysis assignment (three games or a graphic novel journal, plus the plain written document). All of them ask for the same thinking, and students turn in one file on Google Classroom.
 
 | Option | What it is | Students submit |
 |---|---|---|
@@ -51,10 +51,64 @@ The games require about 34 written answers, so plan several class periods.
 
 1. Create a repository and upload the contents of this folder (keep `index.html` at the top level).
 2. Settings, Pages, deploy from the main branch, root folder.
-3. The three games and the written assignment are linked from `index.html`. Each game saves progress in the student's own browser.
+3. The three games, the graphic novel journal, and the written assignment are linked from `index.html`. Each game saves progress in the student's own browser.
 
 Libraries (`lib/three.min.js`, `lib/jspdf.umd.min.js`) are bundled locally with a CDN fallback. The essay Word document is built by the game itself and needs no library (the PDF library is no longer used).
 
 ## Teacher review: the new timelines and guides
 
 The dated “How we got here” events for all 27 amendments, the guides’ introductions, and the crowd characters’ lines were written by the game’s author, not taken from a source. Please spot-check them before use, in particular: the Georgia bill threatening death over *Chisholm v. Georgia* (Amendment XI), the 36 ballots in the 1801 House election (XII), the Memphis and New Orleans riots of 1866 (XIV), Delaware’s empty Senate seat (XVII), Pauline Sabin’s role in repeal (XXI), and the dates for Gregory Watson’s paper and the 1992 ratification (XXVII). The guides appear through narration rather than invented direct quotations. The crowd characters are fictional composites and their lines are illustrative.
+
+## The graphic novel journal (`journal/`)
+
+An illustrated, page-turning version of the same story. It reuses the games' narration, primary-source quotes, legal-lens notes, check questions, dated "How we got here" events, and the same writing prompts, so students do the same thinking in a different format.
+
+* **Read:** each chapter opens with a title page and then comic pages. Panels are drawn in code in an ink-and-halftone style, with the era's building, weather, and skyline, and a portrait of the speaker.
+* **Collect:** students clip quotes, lens notes, and dated clippings to a scrapbook, and earn the same 47 stamps from the check questions.
+* **Write:** the seven Article summaries (4 questions each) and 27 amendment analyses (2 questions each), then the final reflection. Minimum word counts match the games.
+* **Assemble:** at the end of each of the nine chapters the student edits a newspaper front page for the era: a headline they write, a picture they choose, and up to five pinned clippings. These are bound into a printable book.
+* **Turn in:** the Word essay (identical in layout to the games' essay) unlocks when the final reflection is saved. The book can also be printed or saved as a PDF from the browser.
+
+Notes: progress saves in the student's browser. Headlines and journal text are not checked beyond word counts. The illustrations are stylized, and the narration is the game's own (no invented quotations are attributed to historical figures).
+
+## The buildings change with the story
+
+The main building in each scene follows the government's move from Philadelphia to Washington, and the buildings on either side of the plaza change with the era too.
+
+| Scene | Main building | Flanking buildings | Washington Monument |
+|---|---|---|---|
+| 1787 | Pennsylvania State House, Philadelphia | colonial brick houses | none |
+| 1791 | Congress Hall, Philadelphia | colonial brick houses | none |
+| 1795–1804 | The unfinished U.S. Capitol (finished north wing, south wing under scaffolding, crane) | wooden boarding houses | none (not begun) |
+| 1865–1870 | The Capitol with its cast-iron dome | brick rowhouses | unfinished stump |
+| 1913–1920 | The Capitol | brick commercial blocks with shopfronts | finished obelisk |
+| 1933–1951 | The Supreme Court Building (opened 1935) | stepped Art Deco buildings | finished obelisk |
+| 1961–1971 | The Lincoln Memorial (dedicated 1922) | modern glass-and-concrete buildings | finished obelisk |
+| 1982–1992 | The University of Texas Tower, Austin | campus buildings with tile roofs | none |
+| Today | Independence Hall, Philadelphia | colonial brick houses | none |
+
+Simplifications to know about: the buildings are stylized game models rather than exact reproductions, and the State House model has the tower and cupola it has today, although the original steeple was removed in 1781 and a new one was built in 1828. The Assembly Room cutaway appears only in the 1787 scene.
+
+## Backgrounds beyond the plaza (3D versions)
+
+In the two 3D versions, the land beyond the plaza hedge changes with each era as well:
+
+| Scene | What fills the horizon |
+|---|---|
+| 1787 | Philadelphia brick townhouses, Christ Church-style steeple, haystacks and a windmill, the Delaware River with tall ships |
+| 1791 | The same city in winter: snow-capped roofs, chimney smoke, lit windows, snow-laden pines, a frozen river with iced ships |
+| 1795–1804 | Washington City: scattered brick houses, the President’s House, Georgetown hills, grazing cows, rail fences, brick-kiln stacks, the Potomac with sloops |
+| 1865–1870 | The Smithsonian Castle, the White House, a long Treasury colonnade, hospital tents, cannon piles, rowhouses, a Potomac steamboat |
+| 1913–1920 | Beaux-Arts office blocks, the Library of Congress dome, Union Station, factory smokestacks, telephone poles, a circling biplane |
+| 1933–1951 | Art Deco towers, a massive Federal Triangle block, Hooverville shack rows, a radio mast, a drifting blimp |
+| 1961–1971 | Mid-century office slabs, a large March on Washington crowd with signs, a jet with a contrail |
+| 1982–1992 | The Texas State Capitol, glass downtown towers with a construction crane, live oaks, fields of bluebonnets |
+| Today | Philadelphia’s City Hall and glass skyline, the Ben Franklin Bridge over the Delaware |
+
+The backgrounds are also alive. Beyond the hedge, period streets carry traffic that moves (horse carriages and wagons in the 1700s and 1800s, soldiers marching in 1865, Model Ts and streetcars in 1913, sedans in the 1930s, finned cars and buses in the 1960s, modern cars and buses today), with pedestrians on the sidewalks, flocks of birds, flags and smoke, bobbing ships, and distant hills and skylines for depth. Building facades use real brick, stone, glass, concrete, and Art Deco textures with window frames, shutters, cornices, and lit windows.
+
+These are stylized scenery, not exact reproductions, and a few details are simplified (for example, one generic ship model serves for every era’s sailing vessels).
+
+## Screenshots
+
+The `screenshots/` folder holds JPEG screenshots of each version, with a small gallery page (`screenshots/index.html`) linked from the landing page. They are useful for showing students the options before they choose, or for a class presentation. The 3D screenshots are bird's-eye views.

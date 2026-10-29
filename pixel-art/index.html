@@ -234,7 +234,7 @@ body.modal #touch,body.modal #hint{display:none}
     <p class="sub">Level 2 of The Committee of Five. Philadelphia, summer 1787, eleven years after the Declaration. Walk the city, watch the delegates argue out the Constitution, and follow its amendments through time with a lawyer’s eye.</p>
     <p><label for="nm" class="small">Your name, for your case file</label><br><input id="nm" type="text" maxlength="60" autocomplete="name"></p>
     <div class="row"><button class="go" id="begin" type="button">Begin</button><button class="go" id="reset" type="button" hidden>Start over</button></div>
-    <p class="small" style="margin-top:12px"><a href="../" style="color:var(--gold)">Back to the three assignment options</a>. You only need to complete one option.</p>
+    <p class="small" style="margin-top:12px"><a href="../" style="color:var(--gold)">Back to the assignment options</a>. You only need to complete one option.</p>
     <p class="small" style="margin-top:12px">Move: arrow keys or WASD. Sprint: hold Shift. Talk: E, Z, Enter, or Space. Satchel: Esc. Quotes are real and labeled by source. The map is stylized, not to scale, and the narration is the game’s own.</p>
   </div>
 </div>
@@ -811,47 +811,47 @@ IDLE.c8b="A teacher gathers a class by the State House steps. “Now,” she say
 var EPI=16;/* chapter of the epilogue (Constitution Day) */
 function sceneOf(ch){return ch<=8?0:ch>=EPI?8:ch-8;}
 var SCENES=[
- {key:"signing",part:"Part 1",title:"The Signing",year:"1787",place:"Philadelphia, the Pennsylvania State House",
+ {key:"signing",flank:"colonial",landmark:"statehouse",mon:0,part:"Part 1",title:"The Signing",year:"1787",place:"Philadelphia, the Pennsylvania State House",
   cap:"May to September 1787. Philadelphia swelters while delegates argue behind shuttered windows.",
   sky:["#7db6e6","#f7ecd0","#4a3f86","#ff9a54"],amb:["#e8dcc4","#a890b8"],sun:["#fff3cf","#ffb870"],sunI:.82,ambI:.66,fog:1,
   grass:["#5c9c2c","#b3a24c"],leaf:["#2f6a2f","#c9902e"],leafK:null,street:"straw",walk:"brick",filter:"",weather:"leaf",tint:"",amb2:[[255,243,214],[128,128,168]],props:[]},
- {key:"bor",part:"Part 2",title:"The Bill of Rights",year:"1791",place:"Philadelphia, snowbound in December",
-  cap:"December 15, 1791. Snow lies on the State House yard. Virginia has just cast the vote that makes ten amendments part of the Constitution.",
-  sky:["#8e9db3","#d5dde8","#6c7a94","#e8d8c8"],amb:["#c8d4e8","#a8b4d0"],sun:["#fff4e0","#ffd8b0"],sunI:.55,ambI:.8,fog:1.9,
+ {key:"bor",flank:"colonial",landmark:"congresshall",mon:0,part:"Part 2",title:"The Bill of Rights",year:"1791",place:"Philadelphia, outside Congress Hall",
+  cap:"December 15, 1791. Snow lies on the street outside Congress Hall, next door to the State House, where Congress now meets. Virginia has just cast the vote that makes ten amendments part of the Constitution.",
+  sky:["#8e9db3","#d5dde8","#6c7a94","#e8d8c8"],amb:["#c8d4e8","#a8b4d0"],sun:["#fff4e0","#ffd8b0"],sunI:.55,ambI:.8,fog:1.3,
   grass:["#e8eef4","#dfe8f0"],leaf:["#8a8f94","#a8aeb4"],leafK:1,bare:1,street:"snow",walk:"brick",filter:"saturate(.8) contrast(1.05) brightness(1.04)",weather:"snow",tint:"rgba(205,222,255,.2)",amb2:[[205,214,236],[170,180,214]],
   props:[{k:"brazier",x:22,z:17,tx:15,ty:13},{k:"brazier",x:58,z:17,tx:38,ty:13},{k:"brazier",x:30,z:25,tx:21,ty:18},{k:"snowdrift",x:10,z:16,tx:7,ty:12},{k:"snowdrift",x:14,z:24,tx:10,ty:18},{k:"snowdrift",x:66,z:18,tx:46,ty:13},{k:"snowdrift",x:70,z:24,tx:49,ty:18}]},
- {key:"early",part:"Part 3",title:"The Early Republic",year:"1795 to 1804",place:"Washington City, the half-built capital",
-  cap:"1804. Congress has moved to a half-built Washington City, where cows graze near the Capitol and dust rises from every road.",
-  sky:["#9fc8e8","#f3e8c8","#b88a5a","#f0b070"],amb:["#f0e4c8","#d0a880"],sun:["#fff0c8","#ffc080"],sunI:.95,ambI:.6,fog:1.3,
+ {key:"early",flank:"wood",landmark:"capitol1804",mon:0,part:"Part 3",title:"The Early Republic",year:"1795 to 1804",place:"Washington City, beside the unfinished Capitol",
+  cap:"1804. The government has left Philadelphia for a new capital on the Potomac. Only the Capitol’s north wing is finished, the south wing is still going up, and dust rises from every road.",
+  sky:["#9fc8e8","#f3e8c8","#b88a5a","#f0b070"],amb:["#f0e4c8","#d0a880"],sun:["#fff0c8","#ffc080"],sunI:.95,ambI:.6,fog:1.0,
   grass:["#9aa84a","#b09a4a"],leaf:["#7a8a3a","#a89a40"],leafK:.6,street:"dirt",walk:"dirt",filter:"sepia(.28) saturate(1.05)",weather:"dust",tint:"rgba(200,170,120,.16)",amb2:[[255,236,200],[210,170,130]],
   props:[{k:"scaffold",x:12,z:15,tx:8,ty:11},{k:"bricks",x:18,z:17,tx:12,ty:12},{k:"cart",x:64,z:20,tx:45,ty:15},{k:"cart",x:70,z:23,tx:49,ty:17},{k:"sign",x:22,z:25,tx:15,ty:18,c:"#7a5a30"}]},
- {key:"recon",part:"Part 4",title:"War and Reconstruction",year:"1865 to 1870",place:"Washington and the war-torn South",
-  cap:"1865. The Civil War is over. Smoke still hangs over the cities, and the nation must decide what freedom means.",
-  sky:["#8a8f96","#b8bcc0","#5a5560","#a88a78"],amb:["#b4b8bc","#8a8a98"],sun:["#e8e4dc","#d8b898"],sunI:.5,ambI:.85,fog:2.2,
+ {key:"recon",flank:"row",landmark:"capitol",mon:"stump",part:"Part 4",title:"War and Reconstruction",year:"1865 to 1870",place:"Washington, beneath the new Capitol dome",
+  cap:"1865. The Civil War is over. The Capitol now wears its cast-iron dome, but the Washington Monument is a stump, unfinished since 1854, and the nation must decide what freedom means.",
+  sky:["#8a8f96","#b8bcc0","#5a5560","#a88a78"],amb:["#b4b8bc","#8a8a98"],sun:["#e8e4dc","#d8b898"],sunI:.5,ambI:.85,fog:1.15,
   grass:["#7a7a3a","#6a6a34"],leaf:["#6a5a3a","#5a4a30"],leafK:1,bare:1,street:"mud",walk:"slate",filter:"sepia(.55) saturate(.7) contrast(1.1) brightness(.95)",weather:"ash",tint:"rgba(60,55,50,.3)",amb2:[[176,176,176],[130,128,140]],
   props:[{k:"tent",x:10,z:17,tx:7,ty:13},{k:"tent",x:16,z:23,tx:11,ty:18},{k:"tent",x:66,z:19,tx:46,ty:14},{k:"tent",x:72,z:24,tx:50,ty:18},{k:"cart",x:60,z:21,tx:42,ty:16},{k:"flag",x:24,z:14,tx:17,ty:12,n:35},{k:"flag",x:56,z:14,tx:39,ty:12,n:35},{k:"sign",x:20,z:26,tx:14,ty:19,c:"#b04a3a"}]},
- {key:"prog",part:"Part 5",title:"The Progressive Era",year:"1913 to 1920",place:"An American city on the move",
-  cap:"1913 to 1920. Automobiles crowd the streets and telephone wires hum overhead, while reformers march for taxes, clean elections, temperance, and the vote.",
+ {key:"prog",flank:"shop",landmark:"capitol",mon:"full",part:"Part 5",title:"The Progressive Era",year:"1913 to 1920",place:"Washington, the Capitol and the finished Monument",
+  cap:"1913 to 1920. The Washington Monument is finished at last. Automobiles crowd the streets and telephone wires hum overhead, while reformers march for taxes, clean elections, temperance, and the vote.",
   sky:["#5fa8e8","#f0f4f8","#6a6fbf","#ffb890"],amb:["#f4f0e8","#c8b8d0"],sun:["#fffbe8","#ffd0a0"],sunI:.95,ambI:.62,fog:.8,
   grass:["#4aa83a","#5aa03a"],leaf:["#3a8a30","#4a9a34"],leafK:.1,street:"asphalt",walk:"concrete",filter:"sepia(.18) saturate(1.1) contrast(1.05)",weather:"none",tint:"",amb2:[[250,246,236],[200,184,200]],
   props:[{k:"car",x:12,z:20,tx:8,ty:15,c:"#2a2a30"},{k:"car",x:18,z:23,tx:13,ty:17,c:"#8a2a2a"},{k:"car",x:64,z:19,tx:45,ty:14,c:"#2a4a6a"},{k:"car",x:70,z:22,tx:49,ty:16,c:"#3a3a3a"},{k:"pole",x:8,z:14,tx:5,ty:11},{k:"pole",x:26,z:26,tx:18,ty:19},{k:"pole",x:54,z:26,tx:38,ty:19},{k:"pole",x:72,z:14,tx:50,ty:11},{k:"banner",x:30,z:14,tx:21,ty:12,c:"#7a4aa0"},{k:"banner",x:50,z:14,tx:35,ty:12,c:"#d8b040"}]},
- {key:"dep",part:"Part 6",title:"Depression, War, and the Two-Term Limit",year:"1933 to 1951",place:"Hard times in Washington",
-  cap:"1933 to 1951. Breadlines stretch down the block as a new President takes office. Radios carry the news, and the nation changes how it chooses its leaders.",
-  sky:["#a8b0b8","#d8d8d4","#6a6a78","#b0a090"],amb:["#d0d0cc","#9a98a4"],sun:["#f0ece4","#e0c8a8"],sunI:.6,ambI:.85,fog:1.6,
+ {key:"dep",flank:"deco",landmark:"supreme",mon:"full",part:"Part 6",title:"Depression, War, and the Two-Term Limit",year:"1933 to 1951",place:"Washington, the new Supreme Court Building",
+  cap:"1933 to 1951. Breadlines stretch down the block as a new President takes office. The Supreme Court, which met in the Capitol for 145 years, has just moved into a marble temple of its own.",
+  sky:["#a8b0b8","#d8d8d4","#6a6a78","#b0a090"],amb:["#d0d0cc","#9a98a4"],sun:["#f0ece4","#e0c8a8"],sunI:.6,ambI:.85,fog:1.2,
   grass:["#8a8a5a","#7a7a50"],leaf:["#6a6a40","#5a5a38"],leafK:.8,street:"asphalt",walk:"concrete",filter:"grayscale(.75) contrast(1.1) brightness(.97)",weather:"dust",tint:"rgba(90,90,90,.22)",amb2:[[220,220,214],[160,158,170]],
   props:[{k:"shack",x:8,z:17,tx:5,ty:13},{k:"shack",x:12,z:23,tx:8,ty:18},{k:"shack",x:66,z:18,tx:46,ty:13},{k:"shack",x:72,z:22,tx:50,ty:17},{k:"car",x:60,z:24,tx:42,ty:18,c:"#3a3a3a"},{k:"sign",x:22,z:16,tx:15,ty:12,c:"#8a8a8a"},{k:"pole",x:74,z:14,tx:52,ty:11}]},
- {key:"civil",part:"Part 7",title:"The Civil Rights Era",year:"1961 to 1971",place:"Washington during the movement",
-  cap:"1961 to 1971. Television carries marches, sit-ins, and a war in Vietnam into every living room. Americans are demanding that the Constitution's promises apply to everyone.",
+ {key:"civil",flank:"modern",landmark:"lincoln",mon:"full",part:"Part 7",title:"The Civil Rights Era",year:"1961 to 1971",place:"Washington, at the Lincoln Memorial",
+  cap:"1961 to 1971. Television carries marches, sit-ins, and a war in Vietnam into every living room. In 1963, 250,000 people gather at the Lincoln Memorial to demand that the Constitution's promises apply to everyone.",
   sky:["#3a9af0","#e8f6ff","#e87a5a","#ffd070"],amb:["#f8f4ec","#e0c8b8"],sun:["#fffff0","#ffd890"],sunI:1,ambI:.62,fog:.6,
   grass:["#3ab84a","#40b040"],leaf:["#2aa040","#38a840"],leafK:0,street:"lined",walk:"concrete",filter:"saturate(1.4) contrast(1.08)",weather:"none",tint:"",amb2:[[255,250,240],[225,200,185]],
   props:[{k:"car",x:10,z:19,tx:7,ty:14,c:"#d8c8a8"},{k:"car",x:16,z:23,tx:11,ty:17,c:"#3a6aa0"},{k:"car",x:66,z:20,tx:46,ty:15,c:"#b04a4a"},{k:"sign",x:24,z:18,tx:17,ty:13,c:"#f0f0f0"},{k:"sign",x:26,z:22,tx:18,ty:16,c:"#f0f0f0"},{k:"sign",x:52,z:18,tx:37,ty:13,c:"#f0f0f0"},{k:"sign",x:54,z:22,tx:38,ty:16,c:"#f0f0f0"},{k:"tv",x:30,z:25,tx:21,ty:18},{k:"flag",x:22,z:14,tx:16,ty:12,n:50},{k:"flag",x:58,z:14,tx:41,ty:12,n:50}]},
- {key:"modern",part:"Part 8",title:"A Student Revives an Amendment",year:"1982 to 1992",place:"A university campus in Texas",
-  cap:"1982 to 1992. On a college campus in Austin, a student finds an amendment that has been waiting for two centuries.",
+ {key:"modern",flank:"campus",landmark:"uttower",mon:0,part:"Part 8",title:"A Student Revives an Amendment",year:"1982 to 1992",place:"Austin, Texas, beneath the University of Texas Tower",
+  cap:"1982 to 1992. Far from Philadelphia and Washington, on a college campus in Austin, a student finds an amendment that has been waiting for two centuries.",
   sky:["#4aa6f0","#eaf4ff","#5a7ad0","#f8c8a0"],amb:["#f4f6fa","#d0d4e0"],sun:["#fffdf4","#ffe0b8"],sunI:.9,ambI:.66,fog:.5,
   grass:["#58b848","#58b448"],leaf:["#3a9a40","#4a9a40"],leafK:0,street:"lined",walk:"brick",filter:"saturate(1.15) contrast(1.04)",weather:"none",tint:"",amb2:[[250,252,255],[210,214,228]],
   props:[{k:"car",x:10,z:20,tx:7,ty:15,c:"#9a2a2a"},{k:"car",x:16,z:23,tx:11,ty:17,c:"#2a6a9a"},{k:"car",x:66,z:19,tx:46,ty:14,c:"#3a8a4a"},{k:"rack",x:62,z:24,tx:43,ty:18},{k:"sign",x:24,z:26,tx:17,ty:19,c:"#bf5700"},{k:"flag",x:40,z:14,tx:28,ty:12,n:50}]},
- {key:"epilogue",part:"Epilogue",title:"Constitution Day",year:"Today",place:"Philadelphia, golden hour",
-  cap:"Constitution Day, today. The plaza is quiet and the Hall of Echoes stands open at last.",
+ {key:"epilogue",flank:"colonial",landmark:"statehouse",mon:0,part:"Epilogue",title:"Constitution Day",year:"Today",place:"Philadelphia, Independence Hall",
+  cap:"Constitution Day, today. The story ends where it began, outside the Pennsylvania State House, now called Independence Hall. The Hall of Echoes stands open at last.",
   sky:["#6ab0f0","#fff0d0","#4a4a9a","#ffb070"],amb:["#f4e8d4","#b8a0c0"],sun:["#fff4d0","#ffb870"],sunI:.9,ambI:.65,fog:.8,
   grass:["#5ab044","#6ab040"],leaf:["#3a9a34","#4a9a34"],leafK:0,street:"lined",walk:"brick",filter:"saturate(1.1)",weather:"leaf",tint:"",amb2:[[255,244,226],[190,170,200]],
   props:[{k:"flag",x:22,z:14,tx:16,ty:12,n:50},{k:"flag",x:58,z:14,tx:41,ty:12,n:50},{k:"flag",x:30,z:26,tx:21,ty:19,n:50},{k:"flag",x:50,z:26,tx:35,ty:19,n:50}]}
@@ -917,7 +917,7 @@ function setEraTag(){var sc=curScene(),t=$("eraTag");if(!t){t=el("div",{id:"eraT
 /* ============ GUIDES: who walks you through each era ============ */
 var GUIDES=[
  {id:"madison91",name:"James Madison",scene:1,ams:[1,2,3],
-  intro:"December 15, 1791. Snow is falling on Philadelphia, the temporary capital. Virginia has just ratified, and ten amendments will join the Constitution. James Madison, who wrote them, meets you on the State House steps. The first three protect the freedoms of the mind, the militia, and the home.",
+  intro:"December 15, 1791. Snow is falling on Philadelphia, the temporary capital. Virginia has just ratified, and ten amendments will join the Constitution. James Madison, who wrote them, meets you outside Congress Hall, where Congress now sits. The first three protect the freedoms of the mind, the militia, and the home.",
   outro:"Madison nods toward Mercy Otis Warren, who is waiting by a brazier. She argued for these protections before most people did."},
  {id:"warren",name:"Mercy Otis Warren",scene:1,ams:[4,5,6,7],
   intro:"Mercy Otis Warren, a Massachusetts writer and Anti-Federalist, warned in 1788 that a Constitution without a bill of rights left liberty at the mercy of rulers. Now she walks you through four amendments about searches, fair procedures, trials, and juries.",
@@ -1355,11 +1355,70 @@ function makeHouse(wt,ht,o){
   if(o.sign){R(c,w-12,h-60,2,26,"#23232c");R(c,w-24,h-60,14,2,"#23232c");R(c,w-22,h-58,10,12,"#e8c46a");R(c,w-20,h-56,6,6,"#8a5a2a");R(c,w-14,h-54,2,3,"#8a5a2a");}
   shadeBuilding(c,w,h);return cv;
 }
+
+function marbleFill(c,x,y,w,h,base){R(c,x,y,w,h,base||"#ece8dc");for(var yy=7;yy<h;yy+=8)R(c,x,y+yy,w,1,"rgba(0,0,0,.07)");R(c,x,y,1,h,"rgba(255,255,255,.35)");R(c,x+w-1,y,1,h,"rgba(0,0,0,.12)");}
+function colm(c,x,y,h){R(c,x,y,6,h,"#f4f0e4");R(c,x,y,1,h,"#cfc9b8");R(c,x+5,y,1,h,"#c4bda9");R(c,x+2,y,1,h,"#e6e0d0");R(c,x-1,y,8,3,"#e2ddcc");R(c,x-1,y+h-3,8,3,"#d8d2c0");}
+function tri(c,x1,y1,x2,y2,x3,y3,col){c.fillStyle=col;c.beginPath();c.moveTo(x1,y1);c.lineTo(x2,y2);c.lineTo(x3,y3);c.closePath();c.fill();}
+function makeLandmark2D(kind){
+  var w=320,h=176,cv=document.createElement("canvas");cv.width=w;cv.height=h;var c=cv.getContext("2d"),i;
+  if(kind==="congresshall"){
+    brickFill(c,30,92,260,84,5);roofBand(c,24,66,272,28,"#46526b");R(c,24,64,272,3,"#e8e3d4");R(c,30,120,260,3,"#e8e3d4");
+    for(i=0;i<6;i++){var wx=44+i*40;if(wx>124&&wx<190)continue;winPane(c,wx,104,14,10,i%3===1);winPane(c,wx,132,14,26,i%3===0);}
+    winPane(c,152,102,16,12,false);R(c,142,128,36,48,"#f1ede1");R(c,148,136,24,40,"#2b2030");R(c,159,136,2,40,"#d4b04a");colm(c,136,124,52);colm(c,178,124,52);tri(c,128,124,160,106,192,124,"#f4f0e4");R(c,128,123,64,3,"#d9d4c6");
+    R(c,146,36,28,32,"#f6f2e6");R(c,146,36,28,2,"#d9d4c6");winPane(c,154,44,12,16,false);tri(c,142,36,160,20,178,36,"#46526b");R(c,159,12,2,10,"#d4b04a");
+  }else if(kind==="capitol1804"){
+    marbleFill(c,10,70,134,106,"#e4e0d2");R(c,6,64,142,8,"#7a7568");R(c,6,72,142,2,"#a8a290");
+    for(i=0;i<4;i++){winPane(c,24+i*30,92,14,26,false);winPane(c,24+i*30,132,14,30,i===1);}
+    R(c,64,152,28,24,"#3a3028");R(c,150,150,24,26,"#b8b09a");R(c,144,138,42,3,"#8a6a40");R(c,150,146,8,4,"#a89a80");R(c,162,144,10,6,"#9a907a");
+    R(c,186,136,126,40,"#c9c2ae");for(i=0;i<8;i++)R(c,186+i*16,136,1,40,"rgba(0,0,0,.14)");for(i=0;i<3;i++)R(c,186,146+i*10,126,1,"rgba(0,0,0,.12)");
+    for(i=0;i<5;i++)R(c,190+i*26,76,3,100,"#7a5a30");R(c,188,100,120,3,"#8c6a46");R(c,188,126,120,3,"#8c6a46");R(c,188,76,120,3,"#8c6a46");
+    R(c,250,28,4,148,"#6a4a28");R(c,250,28,56,4,"#6a4a28");R(c,303,32,1,50,"#4a3a24");R(c,300,82,8,8,"#7a7568");
+  }else if(kind==="capitol"){
+    marbleFill(c,8,122,114,54,"#f0ece0");marbleFill(c,198,122,114,54,"#f0ece0");R(c,6,118,118,5,"#e2ddcc");R(c,196,118,118,5,"#e2ddcc");
+    for(i=0;i<4;i++){winPane(c,20+i*26,132,12,12,false);winPane(c,20+i*26,152,12,16,i===2);winPane(c,210+i*26,132,12,12,false);winPane(c,210+i*26,152,12,16,i===1);}
+    marbleFill(c,118,104,84,72,"#f4f0e4");for(i=0;i<6;i++)colm(c,124+i*13,112,64);tri(c,114,108,160,86,206,108,"#f4f0e4");R(c,114,107,92,3,"#d9d4c6");R(c,140,150,40,26,"#3a3028");
+    marbleFill(c,130,66,60,40,"#ede9dd");for(i=0;i<7;i++)R(c,134+i*8,70,2,32,"#d4cebb");R(c,128,64,64,3,"#d9d4c6");
+    c.fillStyle="#f4f0e4";c.beginPath();c.ellipse(160,66,34,38,0,Math.PI,0);c.fill();c.fillStyle="rgba(0,0,0,.1)";c.beginPath();c.ellipse(170,66,22,36,0,Math.PI*1.5,0);c.fill();for(i=1;i<5;i++)R(c,160-34+i*13,38+Math.abs(i-2)*8,1,26-Math.abs(i-2)*8,"rgba(0,0,0,.08)");
+    R(c,154,18,12,14,"#ece8dc");R(c,152,16,16,3,"#d9d4c6");R(c,157,8,6,10,"#ece8dc");R(c,159,0,2,10,"#d4b04a");R(c,157,3,6,4,"#c9a237");
+  }else if(kind==="supreme"){
+    marbleFill(c,14,166,292,10,"#e8e4d8");marbleFill(c,24,158,272,8,"#efebdf");marbleFill(c,34,150,252,8,"#f3efe3");
+    marbleFill(c,44,96,232,54,"#f2eee2");R(c,40,90,240,7,"#e6e1d0");for(i=0;i<8;i++)colm(c,54+i*30,98,52);
+    tri(c,36,90,160,54,284,90,"#f6f2e8");tri(c,52,88,160,60,268,88,"#e8e3d3");R(c,36,89,248,3,"#d9d4c6");R(c,140,116,40,34,"#3a3028");R(c,160,116,1,34,"#6a5a40");R(c,100,122,12,12,"#d9d4c6");R(c,208,122,12,12,"#d9d4c6");
+  }else if(kind==="lincoln"){
+    marbleFill(c,14,166,292,10,"#e8e4d8");marbleFill(c,26,158,268,8,"#efebdf");marbleFill(c,36,150,248,8,"#f3efe3");
+    marbleFill(c,56,92,208,58,"#c4bea9");R(c,150,104,20,46,"#e8e4d8");R(c,146,100,28,6,"#ddd7c5");R(c,154,108,12,12,"#cfc9b8");
+    for(i=0;i<8;i++)colm(c,52+i*30,92,58);R(c,40,82,240,10,"#f0ece0");R(c,48,60,224,22,"#f4f0e4");R(c,112,68,96,3,"#d4b04a");R(c,40,80,240,2,"#d9d4c6");R(c,52,56,216,5,"#e6e1d0");
+  }else if(kind==="uttower"){
+    marbleFill(c,20,118,280,58,"#e2d4b2");roofBand(c,14,102,292,18,"#b84a2a");R(c,14,100,292,3,"#f0e6c8");
+    for(i=0;i<7;i++){if(i===3)continue;winPane(c,34+i*38,128,12,20,i%3===0);winPane(c,34+i*38,154,12,16,false);}
+    marbleFill(c,136,28,48,92,"#e6d8b6");R(c,132,24,56,6,"#d8c89e");R(c,134,28,52,2,"#f0e6c8");
+    winPane(c,150,40,20,16,false);disk(c,160,72,11,"#faf6e6");disk(c,160,72,9,"#fffdf0");R(c,160,65,1,7,"#2a2a30");R(c,160,72,6,1,"#2a2a30");winPane(c,152,90,16,24,false);
+    tri(c,134,24,160,2,186,24,"#b84a2a");R(c,159,0,2,6,"#d4b04a");R(c,146,134,28,42,"#3a3028");
+  }
+  R(c,0,170,w,6,"#8a8478");R(c,0,170,w,1,"#a8a396");shadeBuilding(c,w,h);return cv;
+}
+function makeFlank2D(kind,wt,ht,seed){
+  var w=wt*16,h=ht*16,cv=document.createElement("canvas");cv.width=w;cv.height=h;var c=cv.getContext("2d"),i;
+  if(kind==="wood"){R(c,0,22,w,h-22,"#a88458");for(i=0;i<(h-22)/6;i++)R(c,0,22+i*6,w,1,"rgba(0,0,0,.18)");roofBand(c,-2,0,w+4,24,"#4a3a2a");R(c,0,22,w,2,"#6a4a2a");
+    for(i=0;i<3;i++){winPane(c,18+i*((w-48)/2),34,12,16,false);winPane(c,18+i*((w-48)/2),62,12,16,i===1);}R(c,w/2-8,h-34,16,34,"#4a3220");}
+  else if(kind==="row"){brickFill(c,0,12,w,h-12,seed);R(c,0,10,w,5,"#e8e3d4");R(c,0,15,w,2,"rgba(0,0,0,.2)");
+    for(i=0;i<4;i++){winPane(c,14+i*((w-40)/3),26,12,16,i===2);winPane(c,14+i*((w-40)/3),54,12,18,false);}R(c,w/2-9,h-36,18,36,"#2b2030");R(c,w/2-11,h-38,22,3,"#e8e3d4");}
+  else if(kind==="shop"){brickFill(c,0,6,w,h-6,seed);R(c,0,4,w,4,"#d8d2c0");
+    for(i=0;i<4;i++)winPane(c,14+i*((w-40)/3),16,12,16,i===1);R(c,6,50,w-12,34,"#7fb0c8");for(i=0;i<6;i++)R(c,6+i*((w-12)/6),50,2,34,"#4a5a66");R(c,6,50,w-12,2,"#4a5a66");
+    for(i=0;i<(w-8)/8;i++)R(c,4+i*8,42,8,8,i%2?"#f4f4f4":"#b02a2a");R(c,w/2-8,h-30,16,30,"#3a2a2e");}
+  else if(kind==="deco"){R(c,0,24,w,h-24,"#cfc8b4");R(c,18,10,w-36,16,"#d6cfbb");R(c,40,0,w-80,12,"#ddd6c2");
+    for(i=0;i<6;i++){R(c,12+i*((w-30)/5),28,6,h-34,"#7a98ae");R(c,12+i*((w-30)/5),28,1,h-34,"#e8e2d0");}R(c,0,h-5,w,5,"#8a8478");R(c,w/2-9,h-30,18,30,"#3a3028");}
+  else if(kind==="modern"){R(c,-2,16,w+4,8,"#505058");R(c,0,24,w,h-24,"#e8e8e4");R(c,8,36,w-16,30,"#7aa8c8");for(i=0;i<8;i++)R(c,8+i*((w-16)/8),36,1,30,"rgba(255,255,255,.5)");R(c,8,36,w-16,3,"#5a88a8");R(c,w/2-8,h-30,16,30,"#3a4048");}
+  else{R(c,0,24,w,h-24,"#e2d4b2");roofBand(c,-2,0,w+4,26,"#b84a2a");R(c,0,24,w,3,"#f0e6c8");
+    for(i=0;i<4;i++){winPane(c,16+i*((w-44)/3),38,12,18,i===1);winPane(c,16+i*((w-44)/3),64,12,16,false);}R(c,w/2-8,h-32,16,32,"#3a3028");}
+  R(c,0,h-5,w,5,"#8a8478");R(c,0,h-5,w,1,"#a8a396");shadeBuilding(c,w,h);return cv;
+}
+function drawObelisk(p){var x=p.x,y=p.y,H=p.n==="stump"?46:96;tri(ctx,x-7,y,x-4,y-H,x+7,y,"#e6e2d4");ctx.fillStyle="#ece8dc";ctx.beginPath();ctx.moveTo(x-7,y);ctx.lineTo(x-3,y-H);ctx.lineTo(x+3,y-H);ctx.lineTo(x+7,y);ctx.closePath();ctx.fill();R(ctx,x+2,y-H,1,H,"rgba(0,0,0,.13)");if(p.n!=="stump")tri(ctx,x-3,y-H,x,y-H-9,x+3,y-H,"#ece8dc");else R(ctx,x-4,y-H-2,8,2,"#c9c2ae");R(ctx,x-9,y-3,18,3,"#cfc9b8");}
 function buildBuildings(){
-  BCV.sh=makeStateHouse();
-  BCV.gr=makeHouse(10,6,{roofH:26,roof:"#5a5f78",cols:3,seed:11,lit:0,door:1});
-  BCV.tv=makeHouse(11,6,{roofH:24,roof:"#4e6a5c",cols:4,seed:12,lit:1,door:1,sign:1});
   var sc=curScene();
+  BCV.sh=sc.landmark==="statehouse"?makeStateHouse():makeLandmark2D(sc.landmark);
+  BCV.gr=sc.flank==="colonial"?makeHouse(10,6,{roofH:26,roof:"#5a5f78",cols:3,seed:11,lit:0,door:1}):makeFlank2D(sc.flank,10,6,11);
+  BCV.tv=sc.flank==="colonial"?makeHouse(11,6,{roofH:24,roof:"#4e6a5c",cols:4,seed:12,lit:1,door:1,sign:1}):makeFlank2D(sc.flank,11,6,12);
   Object.keys(BCV).forEach(function(id){var cb=BCV[id],c2=cb.getContext("2d");c2.globalCompositeOperation="source-atop";
     if(sc.tint){c2.fillStyle=sc.tint;c2.fillRect(0,0,cb.width,cb.height);}
     if(sc.key==="bor"){c2.fillStyle="rgba(255,255,255,.92)";c2.fillRect(0,0,cb.width,5);c2.fillStyle="rgba(255,255,255,.55)";c2.fillRect(0,5,cb.width,4);}
@@ -2048,6 +2107,7 @@ var SPROPS=[],SPS=[],facadeOn=false;
 var PROP_SH2={car:[26,10],tent:[22,10],cart:[18,8],shack:[20,12],scaffold:[26,16],tv:[14,6],rack:[20,5],brazier:[10,5]};
 function ell(x,y,rx,ry,col){ctx.fillStyle=col;ctx.beginPath();ctx.ellipse(x,y,rx,ry,0,0,6.3);ctx.fill();}
 var PROP2={
+ obelisk:function(p){drawObelisk(p);},
  snowdrift:function(p){ell(p.x,p.y-1,13,5,"#c4d0e4");ell(p.x-1,p.y-3,11,5,"#f4f8ff");ell(p.x+3,p.y-5,6,3,"#ffffff");},
  brazier:function(p){var x=p.x,y=p.y,f=Math.sin(time*9+x)>0?1:0;R(ctx,x-5,y-5,1,5,"#2a2a30");R(ctx,x+4,y-5,1,5,"#2a2a30");R(ctx,x-6,y-9,12,4,"#3a3a42");R(ctx,x-5,y-9,10,1,"#5a5a64");R(ctx,x-3,y-12-f,6,4,"#ff9a2a");R(ctx,x-2,y-15-f,4,4,"#ffd24a");R(ctx,x-1,y-17-f,2,2,"#fff3b0");},
  scaffold:function(p){var x=p.x,y=p.y;R(ctx,x-12,y-40,2,40,"#7a5a30");R(ctx,x+10,y-40,2,40,"#7a5a30");R(ctx,x-12,y-30,24,2,"#8c6a46");R(ctx,x-12,y-18,24,2,"#8c6a46");R(ctx,x-12,y-8,24,2,"#8c6a46");R(ctx,x-10,y-28,20,1,"#5a4020");},
@@ -2168,7 +2228,9 @@ window.addEventListener("resize",fit);
 function applyScene(k,first){
   var sc=SCENES[k];
   if(k>=1&&!facadeOn){facadeOn=true;for(var yy=2;yy<=10;yy++)for(var xx=18;xx<=37;xx++)grid[yy*MW+xx]=0;setSolid(0,0,MW,5);BLD.push({id:"sh",x:18,y:2,w:20,h:9});setSolid(18,2,20,9);}
+  BLD.forEach(function(b){if(b.id==="sh"){var tall=sc.landmark!=="statehouse";b.y=tall?0:2;b.h=tall?11:9;}});
   SPS.forEach(function(q){for(var i=0;i<q[2];i++)grid[q[1]*MW+q[0]+i]=0;});SPS=[];SPROPS.length=0;
+  if(sc.mon){SPROPS.push({k:"obelisk",x:40*T+8,y:10*T+14,n:sc.mon});setSolid(40,10,1,1);SPS.push([40,10,1]);}
   sc.props.forEach(function(p){var w=(p.k==="car"||p.k==="tent"||p.k==="cart")?2:1;SPROPS.push({k:p.k,x:p.tx*T+8*w,y:p.ty*T+14,c:p.c,n:p.n});setSolid(p.tx,p.ty,w,1);SPS.push([p.tx,p.ty,w]);});
   TREE_CV.length=0;buildTrees();buildBuildings();ground=buildGround();updateGate();
   cv.style.filter="saturate(.86) contrast(1.12) "+sc.filter;
