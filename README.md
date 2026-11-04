@@ -109,6 +109,10 @@ The backgrounds are also alive. Beyond the hedge, period streets carry traffic t
 
 These are stylized scenery, not exact reproductions, and a few details are simplified (for example, one generic ship model serves for every era’s sailing vessels).
 
+## Quiz answer order
+
+Every multiple-choice question shuffles its answer choices, so the correct answer is not always in the same spot. Each student gets their own order, which stays the same if they leave and come back, so classmates cannot share "the answer is B" and a student's keyboard focus never starts on the correct choice. This applies to the pixel-art game, the blocky 3D game, the storybook 3D game, and the graphic novel journal.
+
 ## Screenshots
 
 The `screenshots/` folder holds JPEG screenshots of each version, with a small gallery page (`screenshots/index.html`) linked from the landing page. They are useful for showing students the options before they choose, or for a class presentation. The 3D screenshots are bird's-eye views.
