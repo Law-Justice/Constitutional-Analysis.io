@@ -2072,7 +2072,7 @@ function monTalk(){
   openDlg([
    N("Words rise on the monument as you read them, in the voices you have heard across two centuries: Washington and Franklin, Madison and Mason, Warren, Marshall, Douglass, Paul, Roosevelt, and King. It has a question for you about the legal lens."),
    NT("refl",{title:"The legal-lens reflection",min:100,pts:100,bank:1,prompt:{intro:"In one or two paragraphs, explain how the Constitution’s own design made the amendments possible, and what the amendments show about how American law changes. Use at least one quote, and answer both questions below.",items:["Which features of the original Constitution (the Article V amendment process, separation of powers, federalism, or judicial review) shaped how the amendments came about?","Choose two amendments from different eras. For each, what problem, court decision, or movement led to it, and who gained or lost protection as a result?"],tip:"Tip: tap a quote in the bank to insert it, or press Esc to look back through your satchel while you write."},store:function(t){S.refl=t;}})
-  ],function(){S.enc.refl=1;S.ch=EPI+1;S.done=true;S.completedOn=new Date().toISOString();save();refreshHud();openFinale();});
+  ],function(){S.enc.refl=1;S.ch=EPI+1;S.done=true;S.completedOn=new Date().toISOString();save();refreshHud();autoEssay();openFinale();});
 }
 
 /* ============ DIALOG ENGINE ============ */
@@ -2434,7 +2434,7 @@ function drawTabs(){
     var cb=el("button",{class:"go",type:"button",onclick:function(){downloadCertificate();}},"Download completed essay (Word document)");
     if(!S.done){cb.disabled=true;cb.title="Unlocks when you finish the final reflection";}
     b.append(el("h3",null,"Your completed essay"));
-    b.append(el("p",null,S.done?"Your essay is a Word document with all of your written answers (your article summaries, your amendment analyses, and your reflection) formatted like an essay and ready to attach to a Google Classroom assignment.":"Your essay document unlocks when you finish the final reflection. It will gather all of your written answers into an essay, ready to attach to a Google Classroom assignment."));
+    b.append(el("p",null,S.done?"Your essay is a Word document with all of your written answers (your article summaries, your amendment analyses, and your reflection) formatted like an essay and ready to attach to a Google Classroom assignment. It also downloaded automatically when you finished. Use this button to download it again.":"Your essay document unlocks when you finish the final reflection. It will gather all of your written answers into an essay, ready to attach to a Google Classroom assignment. It will download automatically when you finish, and you can download it again here."));
     b.append(el("div",{class:"row"},cb));
     b.append(el("h3",null,"Or copy your work as text"),el("p",{class:"cap"},"Copy this and paste it into a Google Doc or your assignment. It updates as you play."),ta);
     var rowb=[copyBtn(ta,txt)];if($("dlg").hidden)rowb.push(el("button",{class:"go",type:"button",onclick:function(){closeMenu();askReset();}},"Start over"));
@@ -2448,7 +2448,7 @@ function askReset(){
 }
 function openFinale(){
   setTimeout(function(){
-    $("mbody").replaceChildren();curTab=3;openMenu();toast("Case file complete");
+    $("mbody").replaceChildren();curTab=3;openMenu();toast("Case file complete. Your essay downloaded automatically. Use the button below to download it again.");
   },200);
 }
 $("bBinder").addEventListener("click",function(){if(!modal||($("menu").hidden&&!$("dlg").hidden)){curTab=1;openMenu();this.blur();}});
@@ -2540,6 +2540,8 @@ function buildCertificate(){
   return zipStore([{name:"[Content_Types].xml",text:ct},{name:"_rels/.rels",text:rels},{name:"word/document.xml",text:doc},{name:"word/styles.xml",text:styles},{name:"word/_rels/document.xml.rels",text:drels},{name:"word/header1.xml",text:hdr1},{name:"word/header2.xml",text:hdr2},{name:"docProps/core.xml",text:core}],"application/vnd.openxmlformats-officedocument.wordprocessingml.document");
 }
 function certFileName(){var n=String(S.name||"Student").replace(/[^A-Za-z0-9]+/g,"-").replace(/^-+|-+$/g,"")||"Student";return"Constitutional-Analysis-"+n+".docx";}
+function autoEssay(){if(S.essayAuto||!S.done)return;S.essayAuto=1;save();try{downloadCertificate();}catch(e){}}
+/*auto-essay*/
 async function downloadCertificate(){
   if(!S.done){toast("Finish the final reflection to unlock your essay document.");return;}
   var blob=null;try{blob=buildCertificate();}catch(e){console.error(e);}
